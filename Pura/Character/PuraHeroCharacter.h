@@ -6,8 +6,10 @@
 #include "PuraBaseCharacter.h"
 #include "PuraHeroCharacter.generated.h"
 
+struct FInputActionValue;
 class UCameraComponent;
 class USpringArmComponent;
+class UDataAsset_InputConfig;
 
 UCLASS()
 class PURA_API APuraHeroCharacter : public APuraBaseCharacter
@@ -36,5 +38,17 @@ private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
 	USpringArmComponent* CameraBoom;
+#pragma endregion
+
+	
+
+#pragma region Inputs
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "CharacterData", meta = (AllowPrivateAccess = "true"))
+	UDataAsset_InputConfig* InputConfigDataAsset;
+	
+	void Input_Move(const FInputActionValue& Value);
+	
+	void Input_Look(const FInputActionValue& Value);
+	
 #pragma endregion
 };
