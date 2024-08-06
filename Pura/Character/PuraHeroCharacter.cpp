@@ -83,7 +83,13 @@ void APuraHeroCharacter::Input_Move(const FInputActionValue& Value)
 void APuraHeroCharacter::Input_Look(const FInputActionValue& Value)
 {
 	const FVector2D LookVector = Value.Get<FVector2D>();
-	AddControllerYawInput(LookVector.X);
-	AddControllerPitchInput(LookVector.Y);
+	if(LookVector.X != 0)
+	{
+		AddControllerYawInput(LookVector.X);
+	}
+	if(LookVector.Y != 0)
+	{
+		AddControllerPitchInput(LookVector.Y);
+	}
 }
 
