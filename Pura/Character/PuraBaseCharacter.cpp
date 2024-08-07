@@ -3,6 +3,9 @@
 
 #include "PuraBaseCharacter.h"
 
+#include "Pura/AbilitySystem/PuraAbilitySystemComponent.h"
+#include "Pura/AbilitySystem/PuraAttributeSet.h"
+
 
 // Sets default values
 APuraBaseCharacter::APuraBaseCharacter()
@@ -11,6 +14,22 @@ APuraBaseCharacter::APuraBaseCharacter()
 	PrimaryActorTick.bCanEverTick = false;
 	PrimaryActorTick.bStartWithTickEnabled = false;
 	GetMesh()->bReceivesDecals = false;
+	PuraAttributeSet = CreateDefaultSubobject<UPuraAttributeSet>(TEXT("PuraAttributeSet"));
+	PuraAbilitySystemComponent = CreateDefaultSubobject<UPuraAbilitySystemComponent>(TEXT("PuraAbilitySystemComponent"));
+}
+
+void APuraBaseCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+	if(PuraAbilitySystemComponent)
+	{
+		PuraAbilitySystemComponent->InitAbilityActorInfo(this, this);
+	}
+}
+
+UAbilitySystemComponent* APuraBaseCharacter::GetAbilitySystemComponent() const
+{
+	return GetPuraAbilitySystemComponent();
 }
 
 // Called when the game starts or when spawned

@@ -12,6 +12,8 @@
 #include "Pura/Input/PuraInputComponent.h"
 #include "Pura/Util/PuraDebugHelper.h"
 #include "Pura/Util/PuraGameplayTags.h"
+#include "Pura/AbilitySystem/PuraAbilitySystemComponent.h"
+#include "Pura/AbilitySystem/PuraAttributeSet.h"
 
 // Sets default values
 APuraHeroCharacter::APuraHeroCharacter()
@@ -43,6 +45,16 @@ void APuraHeroCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	Debug::Print("Working");
+}
+
+void APuraHeroCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+	if(PuraAttributeSet && PuraAbilitySystemComponent)
+	{
+		const FString DebugMessage = FString::Printf(TEXT("Owner Actor: %s"), *PuraAbilitySystemComponent->GetOwnerActor()->GetActorLabel());
+		Debug::Print("PuraAttributeSet and PuraAbilitySystemComponent are valid: " + DebugMessage);
+	}
 }
 
 // Called every frame

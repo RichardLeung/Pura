@@ -16,9 +16,11 @@ public class Pura : ModuleRules
 			"InputCore", 
 			"EnhancedInput",
 			"GameplayTags",
+            "GameplayAbilities",
+            "GameplayTasks"
 		});
 
-		PrivateDependencyModuleNames.AddRange(new string[] {  });
+		PrivateDependencyModuleNames.AddRange(new string[] { "GameplayAbilities" });
 
 		// Uncomment if you are using Slate UI
 		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
