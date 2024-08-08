@@ -14,6 +14,7 @@
 #include "Pura/Util/PuraGameplayTags.h"
 #include "Pura/AbilitySystem/PuraAbilitySystemComponent.h"
 #include "Pura/AbilitySystem/PuraAttributeSet.h"
+#include "Pura/DataAsset/DataAsset_StartUpBase.h"
 
 // Sets default values
 APuraHeroCharacter::APuraHeroCharacter()
@@ -50,10 +51,12 @@ void APuraHeroCharacter::BeginPlay()
 void APuraHeroCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
-	if(PuraAttributeSet && PuraAbilitySystemComponent)
+	if(!CharacterStartUpData.IsNull())
 	{
-		const FString DebugMessage = FString::Printf(TEXT("Owner Actor: %s"), *PuraAbilitySystemComponent->GetOwnerActor()->GetActorLabel());
-		Debug::Print("PuraAttributeSet and PuraAbilitySystemComponent are valid: " + DebugMessage);
+		if(UDataAsset_StartUpBase* LoadedData = CharacterStartUpData.LoadSynchronous())
+		{
+			LoadedData->GiveToAbilitySystemComponent(PuraAbilitySystemComponent);
+		}
 	}
 }
 

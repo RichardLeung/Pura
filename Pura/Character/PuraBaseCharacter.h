@@ -7,6 +7,7 @@
 #include "GameFramework/Character.h"
 #include "PuraBaseCharacter.generated.h"
 
+class UDataAsset_StartUpBase;
 class UPuraAttributeSet;
 class UPuraAbilitySystemComponent;
 
@@ -29,6 +30,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = AbilitySystem)
 	UPuraAttributeSet* PuraAttributeSet;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = CharacterData)
+	TSoftObjectPtr<UDataAsset_StartUpBase> CharacterStartUpData;
 	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
