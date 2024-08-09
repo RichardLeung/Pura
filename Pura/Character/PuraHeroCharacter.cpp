@@ -14,6 +14,7 @@
 #include "Pura/Util/PuraGameplayTags.h"
 #include "Pura/AbilitySystem/PuraAbilitySystemComponent.h"
 #include "Pura/AbilitySystem/PuraAttributeSet.h"
+#include "Pura/Component/Combat/HeroCombatComponent.h"
 #include "Pura/DataAsset/DataAsset_StartUpBase.h"
 
 // Sets default values
@@ -39,6 +40,8 @@ APuraHeroCharacter::APuraHeroCharacter()
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 500.0f, 0.0f);
 	GetCharacterMovement()->MaxWalkSpeed = 400.0f;
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.0f;
+
+	HeroCombatComponent = CreateDefaultSubobject<UHeroCombatComponent>(TEXT("HeroCombatComponent"));
 }
 
 // Called when the game starts or when spawned

@@ -6,6 +6,8 @@
 #include "Abilities/GameplayAbility.h"
 #include "PuraGameplayAbility.generated.h"
 
+class UPawnCombatComponent;
+
 UENUM(BlueprintType)
 enum class EPuraAbilityActivationPolicy : uint8
 {
@@ -35,4 +37,7 @@ protected:
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "PuraAbility")
 	EPuraAbilityActivationPolicy AbilityActivationPolicy = EPuraAbilityActivationPolicy::OnTriggered;
+
+	UFUNCTION(BlueprintPure, Category="Pura|Ability")
+	UPawnCombatComponent* GetPawnCombatComponentFromActorInfo() const;
 };
