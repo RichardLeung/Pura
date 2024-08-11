@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "PuraBaseCharacter.h"
+#include "GameplayTagContainer.h"
 #include "PuraHeroCharacter.generated.h"
 
 class UHeroCombatComponent;
@@ -53,6 +54,10 @@ private:
 	void Input_Move(const FInputActionValue& Value);
 	
 	void Input_Look(const FInputActionValue& Value);
+	
+	void Input_AbilityInputPressed(FGameplayTag InInputTag);
+	
+	void Input_AbilityInputReleased(FGameplayTag InInputTag);
 	
 #pragma endregion
 public:

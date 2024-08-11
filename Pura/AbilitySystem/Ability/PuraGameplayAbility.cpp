@@ -35,3 +35,9 @@ UPawnCombatComponent* UPuraGameplayAbility::GetPawnCombatComponentFromActorInfo(
 {
 	return GetAvatarActorFromActorInfo()->FindComponentByClass<UPawnCombatComponent>();
 }
+
+UPuraAbilitySystemComponent* UPuraGameplayAbility::GetPuraAbilitySystemComponentFromActorInfo() const
+{
+	return Cast<UPuraAbilitySystemComponent>(CurrentActorInfo->AbilitySystemComponent);
+}
+

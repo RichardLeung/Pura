@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
 #include "Engine/DataAsset.h"
+#include "Pura/Util/PuraGameplayTags.h"
 #include "DataAsset_InputConfig.generated.h"
 
 class UInputMappingContext;
@@ -21,6 +22,11 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	UInputAction* InputAction;
+
+	bool IsValid() const
+	{
+		return InputTag.IsValid() && InputAction;
+	}
 };
 
 /**
@@ -38,6 +44,9 @@ public:
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta=(TitleProperty="InputTag"))
 	TArray<FPuraInputActionConfig> NativeInputActions;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta=(TitleProperty="InputTag"))
+	TArray<FPuraInputActionConfig> AbilityInputActions;
 
 	UInputAction* GetInputActionByTag(const FGameplayTag& Tag) const;
 };

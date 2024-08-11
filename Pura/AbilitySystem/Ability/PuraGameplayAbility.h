@@ -6,6 +6,7 @@
 #include "Abilities/GameplayAbility.h"
 #include "PuraGameplayAbility.generated.h"
 
+class UPuraAbilitySystemComponent;
 class UPawnCombatComponent;
 
 UENUM(BlueprintType)
@@ -40,4 +41,7 @@ protected:
 
 	UFUNCTION(BlueprintPure, Category="Pura|Ability")
 	UPawnCombatComponent* GetPawnCombatComponentFromActorInfo() const;
+
+	UFUNCTION(BlueprintPure, Category="Pura|Ability")
+	UPuraAbilitySystemComponent* GetPuraAbilitySystemComponentFromActorInfo() const;
 };

@@ -2,7 +2,6 @@
 
 
 #include "PuraHeroCharacter.h"
-
 #include "EnhancedInputSubsystems.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -80,6 +79,7 @@ void APuraHeroCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 	UPuraInputComponent* PuraInputComponent = CastChecked<UPuraInputComponent>(PlayerInputComponent);
 	PuraInputComponent->BindNativeInputAction(InputConfigDataAsset, PuraGameplayTags::InputTag_Move, ETriggerEvent::Triggered, this, &ThisClass::Input_Move);
 	PuraInputComponent->BindNativeInputAction(InputConfigDataAsset, PuraGameplayTags::InputTag_Look, ETriggerEvent::Triggered, this, &ThisClass::Input_Look);
+	PuraInputComponent->BindAbilityInputAction(InputConfigDataAsset, this, &ThisClass::Input_AbilityInputPressed, &ThisClass::Input_AbilityInputReleased);
 }
 
 void APuraHeroCharacter::Input_Move(const FInputActionValue& Value)
@@ -109,5 +109,15 @@ void APuraHeroCharacter::Input_Look(const FInputActionValue& Value)
 	{
 		AddControllerPitchInput(LookVector.Y);
 	}
+}
+
+void APuraHeroCharacter::Input_AbilityInputPressed(FGameplayTag InInputTag)
+{
+	PuraAbilitySystemComponent->OnAbilityInputPressed(InInputTag);
+}
+
+void APuraHeroCharacter::Input_AbilityInputReleased(FGameplayTag InInputTag)
+{
+	PuraAbilitySystemComponent->OnAbilityInputReleased(InInputTag);
 }
 

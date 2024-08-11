@@ -4,33 +4,17 @@
 #include "PuraAbilitySystemComponent.h"
 
 
-// Sets default values for this component's properties
-UPuraAbilitySystemComponent::UPuraAbilitySystemComponent()
+void UPuraAbilitySystemComponent::OnAbilityInputPressed(const FGameplayTag& InInputTag)
 {
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = true;
-
-	// ...
+	if(!InInputTag.IsValid()) return;
+	for (const FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
+	{
+		if(!AbilitySpec.DynamicAbilityTags.HasTagExact(InInputTag)) continue;
+		TryActivateAbility(AbilitySpec.Handle);
+	}
 }
 
-
-// Called when the game starts
-void UPuraAbilitySystemComponent::BeginPlay()
+void UPuraAbilitySystemComponent::OnAbilityInputReleased(const FGameplayTag& InInputTag)
 {
-	Super::BeginPlay();
-
-	// ...
-	
+	if(!InInputTag.IsValid()) return;
 }
-
-
-// Called every frame
-void UPuraAbilitySystemComponent::TickComponent(float DeltaTime, ELevelTick TickType,
-                                                FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	// ...
-}
-
