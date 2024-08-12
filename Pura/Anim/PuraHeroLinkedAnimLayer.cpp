@@ -2,3 +2,10 @@
 
 
 #include "PuraHeroLinkedAnimLayer.h"
+
+#include "PuraHeroAnimInstance.h"
+
+UPuraHeroAnimInstance* UPuraHeroLinkedAnimLayer::GetHeroAnimInstance() const
+{
+	return Cast<UPuraHeroAnimInstance>(GetOwningComponent()->GetAnimInstance());
+}
