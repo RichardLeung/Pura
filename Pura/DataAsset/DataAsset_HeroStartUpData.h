@@ -4,23 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "DataAsset_StartUpBase.h"
-#include "GameplayTagContainer.h"
+#include "Pura/Util/PuraStructTypes.h"
 #include "DataAsset_HeroStartUpData.generated.h"
-
-USTRUCT(BlueprintType)
-struct FPuraHeroAbilitySet
-{
-	GENERATED_BODY()
-
-public:
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	FGameplayTag InputTag;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	TSubclassOf<UPuraGameplayAbility> AbilityToGrant;
-
-	bool IsValid() const;
-};
 
 /**
  * 

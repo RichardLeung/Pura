@@ -5,11 +5,6 @@
 #include "Pura/AbilitySystem/PuraAbilitySystemComponent.h"
 #include "Pura/AbilitySystem/Ability/PuraGameplayAbility.h"
 
-bool FPuraHeroAbilitySet::IsValid() const
-{
-	return InputTag.IsValid() && AbilityToGrant;
-}
-
 void UDataAsset_HeroStartUpData::GiveToAbilitySystemComponent(UPuraAbilitySystemComponent* InASCToGive,
 	int32 ApplyLevel)
 {

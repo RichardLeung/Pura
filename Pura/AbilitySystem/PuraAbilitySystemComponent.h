@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemComponent.h"
+#include "Pura/Util/PuraStructTypes.h"
 #include "PuraAbilitySystemComponent.generated.h"
 
 
@@ -15,4 +16,7 @@ public:
 	void OnAbilityInputPressed(const FGameplayTag& InInputTag);
 
 	void OnAbilityInputReleased(const FGameplayTag& InInputTag);
+
+	UFUNCTION(BlueprintCallable, Category="Pura|Ability", meta=(ApplyLevel="1"))
+	void GrantHeroWeaponAbilities(const TArray<FPuraHeroAbilitySet>& InDefaultWeaponAbilities, int32 ApplyLevel, TArray<FGameplayAbilitySpecHandle>& OutGrantedAbilitySpecHandles);
 };

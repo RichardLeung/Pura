@@ -2,3 +2,9 @@
 
 
 #include "PuraStructTypes.h"
+#include "Pura/AbilitySystem/Ability/PuraGameplayAbility.h"
+
+bool FPuraHeroAbilitySet::IsValid() const
+{
+	return InputTag.IsValid() && AbilityToGrant;
+}
