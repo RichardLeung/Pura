@@ -19,4 +19,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category="Pura|Ability", meta=(ApplyLevel="1"))
 	void GrantHeroWeaponAbilities(const TArray<FPuraHeroAbilitySet>& InDefaultWeaponAbilities, int32 ApplyLevel, TArray<FGameplayAbilitySpecHandle>& OutGrantedAbilitySpecHandles);
+
+	UFUNCTION(BlueprintCallable, Category="Pura|Ability")
+	void RemoveGrantedHeroWeaponAbilities(UPARAM(ref)TArray<FGameplayAbilitySpecHandle>& InSpecHandlesToRemove);
 };

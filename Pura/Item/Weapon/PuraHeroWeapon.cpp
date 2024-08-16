@@ -4,3 +4,13 @@
 #include "PuraHeroWeapon.h"
 
 
+void APuraHeroWeapon::AssignGrantedAbilitySpecHandles(
+	const TArray<FGameplayAbilitySpecHandle>& InGrantedAbilitySpecHandles)
+{
+	GrantedAbilitySpecHandles = InGrantedAbilitySpecHandles;
+}
+
+TArray<FGameplayAbilitySpecHandle> APuraHeroWeapon::GetGrantedAbilitySpecHandles() const
+{
+	return GrantedAbilitySpecHandles;
+}
