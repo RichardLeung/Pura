@@ -3,7 +3,7 @@
 
 #include "DataAsset_HeroStartUpData.h"
 #include "Pura/AbilitySystem/PuraAbilitySystemComponent.h"
-#include "Pura/AbilitySystem/Ability/PuraGameplayAbility.h"
+#include "Pura/AbilitySystem/Ability/PuraHeroGameplayAbility.h"
 
 void UDataAsset_HeroStartUpData::GiveToAbilitySystemComponent(UPuraAbilitySystemComponent* InASCToGive,
 	int32 ApplyLevel)

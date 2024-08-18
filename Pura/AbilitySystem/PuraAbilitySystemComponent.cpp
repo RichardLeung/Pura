@@ -2,7 +2,7 @@
 
 
 #include "PuraAbilitySystemComponent.h"
-#include "Pura/AbilitySystem/Ability/PuraGameplayAbility.h"
+#include "Pura/AbilitySystem/Ability/PuraHeroGameplayAbility.h"
 #include "Pura/Util/PuraStructTypes.h"
 
 
