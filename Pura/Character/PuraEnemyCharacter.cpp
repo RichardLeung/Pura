@@ -4,7 +4,9 @@
 #include "PuraEnemyCharacter.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Pura/Component/Combat/EnemyCombatComponent.h"
-
+#include "Engine/AssetManager.h"
+#include "Pura/DataAsset/DataAsset_EnemyStartUpData.h"
+#include "Pura/Util/PuraDebugHelper.h"
 
 // Sets default values
 APuraEnemyCharacter::APuraEnemyCharacter()
@@ -22,5 +24,31 @@ APuraEnemyCharacter::APuraEnemyCharacter()
 	GetCharacterMovement()->BrakingDecelerationWalking = 1000.f;
 
 	EnemyCombatComponent = CreateDefaultSubobject<UEnemyCombatComponent>(TEXT("EnemyCombatComponent"));
+}
+
+void APuraEnemyCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+	InitEnemyStartUpData();
+}
+
+void APuraEnemyCharacter::InitEnemyStartUpData()
+{
+	if(CharacterStartUpData.IsNull()) return;
+
+	UAssetManager::GetStreamableManager().RequestAsyncLoad(
+		CharacterStartUpData.ToSoftObjectPath(),
+		FStreamableDelegate::CreateLambda(
+			[this]()
+			{
+				if (UDataAsset_StartUpBase* LoadedData = CharacterStartUpData.Get())
+				{
+					LoadedData->GiveToAbilitySystemComponent(PuraAbilitySystemComponent);
+					Debug::Print("InitEnemyStartUpData: " + LoadedData->GetName(), FColor::Green);
+				}
+			}
+		)
+	);
+	
 }
 
