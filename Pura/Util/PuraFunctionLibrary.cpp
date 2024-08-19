@@ -42,4 +42,22 @@ void UPuraFunctionLibrary::BP_DoesActorHaveTag(AActor* InActor, const FGameplayT
 	OutConfirmType = NativeDoesActorHaveTag(InActor, InTagToCheck) ? EPuraConfirmType::Yes : EPuraConfirmType::No;
 	
 }
+
+UPawnCombatComponent* UPuraFunctionLibrary::NativeGetPawnCombatComponentFromActor(AActor* InActor)
+{
+	check(InActor);
+	if(IPawnCombatInterface* PawnCombatInterface = Cast<IPawnCombatInterface>(InActor))
+	{
+		return PawnCombatInterface->GetPawnCombatComponent();
+	}
+	return nullptr;
+}
+
+UPawnCombatComponent* UPuraFunctionLibrary::BP_GetPawnCombatComponentFromActor(AActor* InActor,
+	EPuraValidType& OutValidType)
+{
+	UPawnCombatComponent* PawnCombatComponent = NativeGetPawnCombatComponentFromActor(InActor);
+	OutValidType = PawnCombatComponent ? EPuraValidType::Valid : EPuraValidType::Invalid;
+	return PawnCombatComponent;
+}
 	

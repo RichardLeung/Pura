@@ -17,6 +17,8 @@ public:
 	// Sets default values for this character's properties
 	APuraEnemyCharacter();
 
+	virtual UPawnCombatComponent* GetPawnCombatComponent() const override;
+
 protected:
 	virtual void PossessedBy(AController* NewController) override;
 	

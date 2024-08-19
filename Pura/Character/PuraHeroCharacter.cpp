@@ -43,6 +43,11 @@ APuraHeroCharacter::APuraHeroCharacter()
 	HeroCombatComponent = CreateDefaultSubobject<UHeroCombatComponent>(TEXT("HeroCombatComponent"));
 }
 
+UPawnCombatComponent* APuraHeroCharacter::GetPawnCombatComponent() const
+{
+	return HeroCombatComponent;
+}
+
 // Called when the game starts or when spawned
 void APuraHeroCharacter::BeginPlay()
 {

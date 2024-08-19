@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
 #include "GameFramework/Character.h"
+#include "Pura/Interface/PawnCombatInterface.h"
 #include "PuraBaseCharacter.generated.h"
 
 class UDataAsset_StartUpBase;
@@ -12,7 +13,7 @@ class UPuraAttributeSet;
 class UPuraAbilitySystemComponent;
 
 UCLASS()
-class PURA_API APuraBaseCharacter : public ACharacter, public IAbilitySystemInterface
+class PURA_API APuraBaseCharacter : public ACharacter, public IAbilitySystemInterface, public IPawnCombatInterface
 {
 	GENERATED_BODY()
 
@@ -22,7 +23,11 @@ public:
 
 	virtual void PossessedBy(AController* NewController) override;
 
+	// Implement IAbilitySystemInterface
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+
+	// Implement IPawnCombatInterface
+	virtual UPawnCombatComponent* GetPawnCombatComponent() const override;
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = AbilitySystem)

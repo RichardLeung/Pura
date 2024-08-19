@@ -4,16 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
+#include "PuraEnumType.h"
 #include "PuraFunctionLibrary.generated.h"
 
+struct FGameplayTag;
+class UPawnCombatComponent;
 class UPuraAbilitySystemComponent;
 
-UENUM()
-enum class EPuraConfirmType : uint8
-{
-	Yes,
-	No,
-};
 /**
  * 
  */
@@ -35,4 +32,10 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Pura|FunctionLibrary", meta=(DisplayName="Does Actor Have Tag", ExpandEnumAsExecs="OutConfirmType"))
 	static void BP_DoesActorHaveTag(AActor* InActor, const FGameplayTag InTagToCheck, EPuraConfirmType& OutConfirmType);
+
+	static UPawnCombatComponent* NativeGetPawnCombatComponentFromActor(AActor* InActor);
+
+	UFUNCTION(BlueprintCallable, Category = "Pura|FunctionLibrary", meta=(DisplayName="Get Pawn Combat Component From Actor", ExpandEnumAsExecs="OutValidType"))
+	static UPawnCombatComponent* BP_GetPawnCombatComponentFromActor(AActor* InActor, EPuraValidType& OutValidType);
+
 };

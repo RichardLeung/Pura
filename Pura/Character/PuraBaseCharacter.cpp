@@ -33,6 +33,11 @@ UAbilitySystemComponent* APuraBaseCharacter::GetAbilitySystemComponent() const
 	return GetPuraAbilitySystemComponent();
 }
 
+UPawnCombatComponent* APuraBaseCharacter::GetPawnCombatComponent() const
+{
+	return nullptr;
+}
+
 // Called when the game starts or when spawned
 void APuraBaseCharacter::BeginPlay()
 {
