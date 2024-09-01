@@ -2,6 +2,8 @@
 
 
 #include "PawnCombatComponent.h"
+
+#include "Components/BoxComponent.h"
 #include "Pura/Item/Weapon/PuraBaseWeapon.h"
 #include "Pura/Util/PuraDebugHelper.h"
 
@@ -12,8 +14,8 @@ void UPawnCombatComponent::RegisterSpawnedWeapon(FGameplayTag InWeaponTagToRegis
 	checkf(!CharacterCarriedWeaponMap.Contains(InWeaponTagToRegister), TEXT("%s has already been added"), *InWeaponToRegister->GetName());
 	check(InWeaponToRegister);
 	CharacterCarriedWeaponMap.Emplace(InWeaponTagToRegister, InWeaponToRegister);
-	FString DebugMessage = FString::Printf(TEXT("Weapon %s has been registered to %s"), *InWeaponToRegister->GetName(), *GetOwner()->GetName());
-	Debug::Print(DebugMessage);
+	InWeaponToRegister->OnWeaponHitTarget.BindUObject(this, &ThisClass::OnWeaponHitTargetActor);
+	InWeaponToRegister->OnWeaponPullFromTarget.BindUObject(this, &ThisClass::OnWeaponPullFromTargetActor);
 	if(bRegisterAsEquippedWeapon)
 	{
 		CurrentEquippedWeaponTag = InWeaponTagToRegister;
@@ -39,4 +41,56 @@ APuraBaseWeapon* UPawnCombatComponent::GetCharacterCurrentEquippedWeapon() const
 		return nullptr;
 	}
 	return GetCharacterCarriedWeaponByTag(CurrentEquippedWeaponTag);
+}
+
+void UPawnCombatComponent::ToggleWeaponCollision(bool bShouldEnable, EToggleDamageType ToggleDamageType)
+{
+	if(ToggleDamageType == EToggleDamageType::CurrentEquippedWeapon)
+    {
+        if(APuraBaseWeapon* WeaponToToggle = GetCharacterCurrentEquippedWeapon())
+        {
+        	if(bShouldEnable)
+        	{
+        		WeaponToToggle->GetWeaponCollisionBox()->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+        	}else
+        	{
+        		WeaponToToggle->GetWeaponCollisionBox()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+        	}
+        }
+    }
+    // else
+    // {
+    //     APuraBaseWeapon* WeaponToToggle = nullptr;
+    //     switch(ToggleDamageType)
+    //     {
+    //     case EToggleDamageType::LeftHand:
+    //         WeaponToToggle = GetCharacterCarriedWeaponByTag(FGameplayTag::RequestGameplayTag(FName("Weapon.LeftHand")));
+    //         break;
+    //     case EToggleDamageType::RightHand:
+    //         WeaponToToggle = GetCharacterCarriedWeaponByTag(FGameplayTag::RequestGameplayTag(FName("Weapon.RightHand")));
+    //         break;
+    //     default:
+    //         break;
+    //     }
+    //     if(WeaponToToggle)
+    //     {
+    //         	if(bShouldEnable)
+    //         	{
+    //         		WeaponToToggle->GetWeaponCollisionBox()->SetCollisionEnabled(ECollisionEnabled::QueryOnly);	
+    //         	}else
+    //         	{
+    //         		WeaponToToggle->GetWeaponCollisionBox()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+    //         	}
+    //     }
+    // }
+}
+
+void UPawnCombatComponent::OnWeaponHitTargetActor(AActor* HitActor)
+{
+	
+}
+
+void UPawnCombatComponent::OnWeaponPullFromTargetActor(AActor* InteractedActor)
+{
+	
 }

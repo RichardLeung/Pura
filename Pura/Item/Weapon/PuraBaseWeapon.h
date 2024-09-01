@@ -8,6 +8,8 @@
 
 class UBoxComponent;
 
+DECLARE_DELEGATE_OneParam(FOnTargetInteractedDelegate, AActor*);
+
 UCLASS()
 class PURA_API APuraBaseWeapon : public AActor
 {
@@ -17,6 +19,9 @@ public:
 	// Sets default values for this actor's properties
 	APuraBaseWeapon();
 
+	FOnTargetInteractedDelegate OnWeaponHitTarget;
+	FOnTargetInteractedDelegate OnWeaponPullFromTarget;
+
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Weapon)
 	UStaticMeshComponent* WeaponMesh;
@@ -24,6 +29,12 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Weapon)
 	UBoxComponent* WeaponCollisionBox;
 
+	UFUNCTION()
+	virtual void OnWeaponCollisionBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	UFUNCTION()
+	virtual void OnWeaponCollisionEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+	
 public:
 	FORCEINLINE UBoxComponent* GetWeaponCollisionBox() const
 	{

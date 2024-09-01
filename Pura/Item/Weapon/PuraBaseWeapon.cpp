@@ -4,6 +4,7 @@
 #include "PuraBaseWeapon.h"
 
 #include "Components/BoxComponent.h"
+#include "Pura/Util/PuraDebugHelper.h"
 
 
 // Sets default values
@@ -19,4 +20,37 @@ APuraBaseWeapon::APuraBaseWeapon()
 	WeaponCollisionBox->SetupAttachment(GetRootComponent());
 	WeaponCollisionBox->SetBoxExtent(FVector(20.f));
 	WeaponCollisionBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	WeaponCollisionBox->OnComponentBeginOverlap.AddUniqueDynamic(this, &ThisClass::OnWeaponCollisionBeginOverlap);
+	WeaponCollisionBox->OnComponentEndOverlap.AddUniqueDynamic(this, &ThisClass::OnWeaponCollisionEndOverlap);
+}
+
+void APuraBaseWeapon::OnWeaponCollisionBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	APawn* WeaponOwningPawn = GetInstigator<APawn>();
+	checkf(WeaponOwningPawn, TEXT("Weapon %s has no owning pawn"), *GetName());
+	if (APawn* HitPawn = Cast<APawn>(OtherActor))
+	{
+		if (WeaponOwningPawn != HitPawn)
+		{
+			OnWeaponHitTarget.ExecuteIfBound(HitPawn);
+		}
+		// TODO: Implement hit check for enemy characters
+	}
+}
+
+void APuraBaseWeapon::OnWeaponCollisionEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	APawn* WeaponOwningPawn = GetInstigator<APawn>();
+	checkf(WeaponOwningPawn, TEXT("Weapon %s has no owning pawn"), *GetName());
+	if (APawn* HitPawn = Cast<APawn>(OtherActor))
+	{
+		if (WeaponOwningPawn != HitPawn)
+		{
+			OnWeaponPullFromTarget.ExecuteIfBound(HitPawn);
+		}
+		// TODO: Implement hit check for enemy characters
+	}
 }

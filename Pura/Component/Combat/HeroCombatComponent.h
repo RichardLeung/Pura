@@ -17,4 +17,7 @@ class PURA_API UHeroCombatComponent : public UPawnCombatComponent
 public:
 	UFUNCTION(BlueprintCallable, Category="Pura|Combat")
 	APuraHeroWeapon* GetHeroCarriedWeaponByTag(FGameplayTag InWeaponTag) const;
+
+	virtual void OnWeaponHitTargetActor(AActor* HitActor) override;
+	virtual void OnWeaponPullFromTargetActor(AActor* InteractedActor) override;
 };

@@ -7,6 +7,14 @@
 #include "Pura/Component/PawnExtensionComponentBase.h"
 #include "PawnCombatComponent.generated.h"
 
+UENUM(BlueprintType)
+enum EToggleDamageType: uint8
+{
+	CurrentEquippedWeapon,
+	LeftHand,
+	RightHand,
+};
+
 
 class APuraBaseWeapon;
 
@@ -30,6 +38,12 @@ public:
 	
 	UFUNCTION(BlueprintCallable, Category="Pura|Combat")
 	APuraBaseWeapon* GetCharacterCurrentEquippedWeapon() const;
+
+	UFUNCTION(BlueprintCallable, Category="Pura|Combat")
+	void ToggleWeaponCollision(bool bShouldEnable, EToggleDamageType ToggleDamageType = EToggleDamageType::CurrentEquippedWeapon);
+
+	virtual void OnWeaponHitTargetActor(AActor* HitActor);
+	virtual void OnWeaponPullFromTargetActor(AActor* InteractedActor);
 private:
 	TMap<FGameplayTag, APuraBaseWeapon*> CharacterCarriedWeaponMap;
 };

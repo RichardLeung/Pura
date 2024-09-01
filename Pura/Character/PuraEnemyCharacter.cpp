@@ -49,11 +49,9 @@ void APuraEnemyCharacter::InitEnemyStartUpData()
 				if (UDataAsset_StartUpBase* LoadedData = CharacterStartUpData.Get())
 				{
 					LoadedData->GiveToAbilitySystemComponent(PuraAbilitySystemComponent);
-					Debug::Print("InitEnemyStartUpData: " + LoadedData->GetName(), FColor::Green);
 				}
 			}
 		)
 	);
-	
 }
 
