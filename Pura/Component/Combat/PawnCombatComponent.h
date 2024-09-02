@@ -44,6 +44,10 @@ public:
 
 	virtual void OnWeaponHitTargetActor(AActor* HitActor);
 	virtual void OnWeaponPullFromTargetActor(AActor* InteractedActor);
+	
+protected:
+	TArray<AActor*> OverloppedActors;
+	
 private:
 	TMap<FGameplayTag, APuraBaseWeapon*> CharacterCarriedWeaponMap;
 };
