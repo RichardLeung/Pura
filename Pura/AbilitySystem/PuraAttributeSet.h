@@ -47,4 +47,8 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = "Pura|Attribute")
 	FGameplayAttributeData DefensePower;
 	ATTRIBUTE_ACCESSORS(UPuraAttributeSet, DefensePower)
+
+	UPROPERTY(BlueprintReadOnly, Category = "Pura|Attribute")
+	FGameplayAttributeData DamageTaken;
+	ATTRIBUTE_ACCESSORS(UPuraAttributeSet, DamageTaken)
 };

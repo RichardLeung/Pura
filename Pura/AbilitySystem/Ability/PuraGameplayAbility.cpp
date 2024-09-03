@@ -2,8 +2,11 @@
 
 
 #include "PuraGameplayAbility.h"
+
+#include "AbilitySystemBlueprintLibrary.h"
 #include "Pura/AbilitySystem/PuraAbilitySystemComponent.h"
 #include "Pura/Component/Combat/PawnCombatComponent.h"
+#include "Pura/Util/PuraEnumType.h"
 
 void UPuraGameplayAbility::OnGiveAbility(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec)
 {
@@ -39,5 +42,23 @@ UPawnCombatComponent* UPuraGameplayAbility::GetPawnCombatComponentFromActorInfo(
 UPuraAbilitySystemComponent* UPuraGameplayAbility::GetPuraAbilitySystemComponentFromActorInfo() const
 {
 	return Cast<UPuraAbilitySystemComponent>(CurrentActorInfo->AbilitySystemComponent);
+}
+
+FActiveGameplayEffectHandle UPuraGameplayAbility::NativeApplyEffectSpecHandleToTarget(AActor* TargetActor,
+	const FGameplayEffectSpecHandle& InSpecHandle)
+{
+	UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor);
+	check(TargetASC && InSpecHandle.IsValid());
+	return GetPuraAbilitySystemComponentFromActorInfo()->ApplyGameplayEffectSpecToTarget(
+		*InSpecHandle.Data,
+		TargetASC);
+}
+
+FActiveGameplayEffectHandle UPuraGameplayAbility::BP_ApplyEffectSpecHandleToTarget(AActor* TargetActor,
+	const FGameplayEffectSpecHandle& InSpecHandle, EPuraSuccessType& OutSuccessType)
+{
+	FActiveGameplayEffectHandle ActiveGEHandle = NativeApplyEffectSpecHandleToTarget(TargetActor, InSpecHandle);
+	OutSuccessType = ActiveGEHandle.WasSuccessfullyApplied() ? EPuraSuccessType::Success : EPuraSuccessType::Failure;
+	return ActiveGEHandle;
 }
 

@@ -44,19 +44,10 @@ FGameplayEffectSpecHandle UPuraHeroGameplayAbility::MakeHeroDamageEffectSpecHand
 		GetAbilityLevel(),
 		ContextHandle
 		);
-	
+	EffectSpecHandle.Data->SetSetByCallerMagnitude(PuraGameplayTags::Shared_SetByCaller_BaseDamage, InWeaponBaseDamage);
 	if(InCurrentAttackTypeTag.IsValid())
 	{
-		EffectSpecHandle.Data->SetSetByCallerMagnitude(
-		InCurrentAttackTypeTag,
-		InUsingComboCount
-	);
-	}else
-	{
-		EffectSpecHandle.Data->SetSetByCallerMagnitude(
-		PuraGameplayTags::Shared_SetByCaller_BaseDamage,
-		InWeaponBaseDamage
-	);
+		EffectSpecHandle.Data->SetSetByCallerMagnitude(InCurrentAttackTypeTag, InUsingComboCount);
 	}
 	return EffectSpecHandle;
 }

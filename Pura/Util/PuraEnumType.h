@@ -13,3 +13,10 @@ enum class EPuraValidType : uint8
 	Valid,
 	Invalid,
 };
+
+UENUM()
+enum class EPuraSuccessType : uint8
+{
+	Success,
+	Failure,
+};
