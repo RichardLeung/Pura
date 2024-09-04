@@ -51,4 +51,6 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = "Pura|Attribute")
 	FGameplayAttributeData DamageTaken;
 	ATTRIBUTE_ACCESSORS(UPuraAttributeSet, DamageTaken)
+
+	virtual void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData &Data) override;
 };
