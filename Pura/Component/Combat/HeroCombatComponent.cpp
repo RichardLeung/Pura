@@ -37,7 +37,11 @@ void UHeroCombatComponent::OnWeaponHitTargetActor(AActor* HitActor)
 		PuraGameplayTags::Shared_Event_MeleeHit,
 		Data
 	);
-	
+	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
+		GetOwningPawn(),
+		PuraGameplayTags::Player_Event_HitPause,
+		FGameplayEventData()
+		);
 }
 
 void UHeroCombatComponent::OnWeaponPullFromTargetActor(AActor* InteractedActor)

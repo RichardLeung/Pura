@@ -17,12 +17,14 @@ namespace PuraGameplayTags
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Unequip_Axe);
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Attack_Light_Axe);
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Attack_Heavy_Axe);
+	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_HitPause);
 	
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Weapon_Axe);
 
 	//Player Event Tags
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_Equip_Axe);
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_Unequip_Axe);
+	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_HitPause);
 
 	//Player Status Tags
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_JumpToFinisher);
