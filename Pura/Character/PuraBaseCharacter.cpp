@@ -38,6 +38,11 @@ UPawnCombatComponent* APuraBaseCharacter::GetPawnCombatComponent() const
 	return nullptr;
 }
 
+UPawnUIComponent* APuraBaseCharacter::GetPawnUIComponent() const
+{
+	return nullptr;
+}
+
 // Called when the game starts or when spawned
 void APuraBaseCharacter::BeginPlay()
 {

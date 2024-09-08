@@ -14,6 +14,7 @@
 #include "Pura/AbilitySystem/PuraAbilitySystemComponent.h"
 #include "Pura/AbilitySystem/PuraAttributeSet.h"
 #include "Pura/Component/Combat/HeroCombatComponent.h"
+#include "Pura/Component/UI/HeroUIComponent.h"
 #include "Pura/DataAsset/DataAsset_StartUpBase.h"
 
 // Sets default values
@@ -41,11 +42,23 @@ APuraHeroCharacter::APuraHeroCharacter()
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.0f;
 
 	HeroCombatComponent = CreateDefaultSubobject<UHeroCombatComponent>(TEXT("HeroCombatComponent"));
+
+	HeroUIComponent = CreateDefaultSubobject<UHeroUIComponent>(TEXT("HeroUIComponent"));
 }
 
 UPawnCombatComponent* APuraHeroCharacter::GetPawnCombatComponent() const
 {
 	return HeroCombatComponent;
+}
+
+UPawnUIComponent* APuraHeroCharacter::GetPawnUIComponent() const
+{
+	return HeroUIComponent;
+}
+
+UHeroUIComponent* APuraHeroCharacter::GetHeroUIComponent() const
+{
+	return HeroUIComponent;
 }
 
 // Called when the game starts or when spawned

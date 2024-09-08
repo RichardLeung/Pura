@@ -13,6 +13,7 @@
 	GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
 	GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
+class IPawnUIInterface;
 /**
  * 
  */
@@ -23,6 +24,8 @@ class PURA_API UPuraAttributeSet : public UAttributeSet
 
 public:
 	UPuraAttributeSet();
+
+	virtual void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData &Data) override;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Pura|Attribute")
 	FGameplayAttributeData CurrentHealth;
@@ -52,5 +55,6 @@ public:
 	FGameplayAttributeData DamageTaken;
 	ATTRIBUTE_ACCESSORS(UPuraAttributeSet, DamageTaken)
 
-	virtual void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData &Data) override;
+private:
+	TWeakInterfacePtr<IPawnUIInterface> CachedPawnUIInterface;
 };

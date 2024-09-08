@@ -17,7 +17,9 @@ public class Pura : ModuleRules
 			"EnhancedInput",
 			"GameplayTags",
             "GameplayAbilities",
-            "GameplayTasks"
+            "GameplayTasks",
+            "UMG",
+            "CommonUI",
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] { "GameplayAbilities" });

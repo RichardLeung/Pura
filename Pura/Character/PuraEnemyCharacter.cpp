@@ -5,6 +5,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Pura/Component/Combat/EnemyCombatComponent.h"
 #include "Engine/AssetManager.h"
+#include "Pura/Component/UI/EnemyUIComponent.h"
 #include "Pura/DataAsset/DataAsset_EnemyStartUpData.h"
 #include "Pura/Util/PuraDebugHelper.h"
 
@@ -24,11 +25,18 @@ APuraEnemyCharacter::APuraEnemyCharacter()
 	GetCharacterMovement()->BrakingDecelerationWalking = 1000.f;
 
 	EnemyCombatComponent = CreateDefaultSubobject<UEnemyCombatComponent>(TEXT("EnemyCombatComponent"));
+
+	EnemyUIComponent = CreateDefaultSubobject<UEnemyUIComponent>(TEXT("EnemyUIComponent"));
 }
 
 UPawnCombatComponent* APuraEnemyCharacter::GetPawnCombatComponent() const
 {
 	return EnemyCombatComponent;
+}
+
+UPawnUIComponent* APuraEnemyCharacter::GetPawnUIComponent() const
+{
+	return EnemyUIComponent;
 }
 
 void APuraEnemyCharacter::PossessedBy(AController* NewController)

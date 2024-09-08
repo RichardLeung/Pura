@@ -3,6 +3,9 @@
 
 #include "PuraAttributeSet.h"
 #include "GameplayEffectExtension.h"
+#include "Pura/Component/UI/HeroUIComponent.h"
+#include "Pura/Component/UI/PawnUIComponent.h"
+#include "Pura/Interface/PawnUIInterface.h"
 #include "Pura/Util/PuraDebugHelper.h"
 #include "Pura/Util/PuraFunctionLibrary.h"
 #include "Pura/Util/PuraGameplayTags.h"
@@ -19,13 +22,26 @@ UPuraAttributeSet::UPuraAttributeSet()
 
 void UPuraAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data)
 {
+	if(!CachedPawnUIInterface.IsValid())
+	{
+		CachedPawnUIInterface = TWeakInterfacePtr<IPawnUIInterface>(Cast<IPawnUIInterface>(Data.Target.GetAvatarActor()));
+	}
+	checkf(CachedPawnUIInterface.IsValid(), TEXT("%s: CachedPawnUIInterface is not valid"), *Data.Target.GetAvatarActor()->GetActorNameOrLabel());
+
+	UPawnUIComponent* PawnUIComponent = CachedPawnUIInterface->GetPawnUIComponent();
+	checkf(PawnUIComponent, TEXT("%s: PawnUIComponent is not valid"), *Data.Target.GetAvatarActor()->GetActorNameOrLabel());
 	if (Data.EvaluatedData.Attribute == GetCurrentHealthAttribute())
 	{;
 		SetCurrentHealth(FMath::Clamp(GetCurrentHealth(), 0.0f, GetMaxHealth()));
+		PawnUIComponent->OnCurrentHealthChanged.Broadcast(GetCurrentHealth() / GetMaxHealth());
 	}
 	if (Data.EvaluatedData.Attribute == GetCurrentRageAttribute())
 	{
 		SetCurrentRage(FMath::Clamp(GetCurrentRage(), 0.0f, GetMaxRage()));
+		if (UHeroUIComponent* HeroUIComponent = CachedPawnUIInterface->GetHeroUIComponent())
+		{
+			HeroUIComponent->OnCurrentRageChanged.Broadcast(GetCurrentRage() / GetMaxRage());
+		}
 	}
 	if (Data.EvaluatedData.Attribute == GetDamageTakenAttribute())
 	{
@@ -33,11 +49,11 @@ void UPuraAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectMo
 		SetCurrentHealth(NewCurrentHealth);
 		Debug::Print("NewCurrentHealth", NewCurrentHealth);
 		// TODO: Notify the UI of the changes
+		PawnUIComponent->OnCurrentHealthChanged.Broadcast(GetCurrentHealth() / GetMaxHealth());
 		// TODO: Check if the character is dead
-		if(NewCurrentHealth == 0)
+		if(GetCurrentHealth() == 0)
 		{
 			UPuraFunctionLibrary::AddGameplayTagToActorIfNone(GetOwningActor(), PuraGameplayTags::Shared_Status_Dead);
-			
 		}
 	}
 }

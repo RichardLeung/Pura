@@ -12,6 +12,7 @@ struct FInputActionValue;
 class UCameraComponent;
 class USpringArmComponent;
 class UDataAsset_InputConfig;
+class UHeroUIComponent;
 
 UCLASS()
 class PURA_API APuraHeroCharacter : public APuraBaseCharacter
@@ -23,6 +24,10 @@ public:
 	APuraHeroCharacter();
 
 	virtual UPawnCombatComponent* GetPawnCombatComponent() const override;
+
+	virtual UPawnUIComponent* GetPawnUIComponent() const override;
+
+	virtual UHeroUIComponent* GetHeroUIComponent() const override;
 
 protected:
 	// Called when the game starts or when spawned
@@ -44,10 +49,14 @@ private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera", meta = (AllowPrivateAccess = "true"))
 	USpringArmComponent* CameraBoom;
-#pragma endregion
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat", meta = (AllowPrivateAccess = "true"))
 	UHeroCombatComponent* HeroCombatComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI", meta = (AllowPrivateAccess = "true"))
+	UHeroUIComponent* HeroUIComponent;
+	
+#pragma endregion
 
 #pragma region Inputs
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "CharacterData", meta = (AllowPrivateAccess = "true"))
