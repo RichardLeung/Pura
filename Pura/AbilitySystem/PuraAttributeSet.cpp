@@ -4,6 +4,8 @@
 #include "PuraAttributeSet.h"
 #include "GameplayEffectExtension.h"
 #include "Pura/Util/PuraDebugHelper.h"
+#include "Pura/Util/PuraFunctionLibrary.h"
+#include "Pura/Util/PuraGameplayTags.h"
 
 UPuraAttributeSet::UPuraAttributeSet()
 {
@@ -34,7 +36,8 @@ void UPuraAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectMo
 		// TODO: Check if the character is dead
 		if(NewCurrentHealth == 0)
 		{
-			// TODO: Handle death
+			UPuraFunctionLibrary::AddGameplayTagToActorIfNone(GetOwningActor(), PuraGameplayTags::Shared_Status_Dead);
+			
 		}
 	}
 }
