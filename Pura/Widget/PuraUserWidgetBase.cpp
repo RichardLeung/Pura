@@ -3,6 +3,7 @@
 
 #include "PuraUserWidgetBase.h"
 #include "Pura/Interface/PawnUIInterface.h"
+#include "Pura/Util/PuraDebugHelper.h"
 
 void UPuraUserWidgetBase::NativeOnInitialized()
 {
@@ -12,6 +13,17 @@ void UPuraUserWidgetBase::NativeOnInitialized()
 		if(UHeroUIComponent* HeroUIComponent = PawnUIInterface->GetHeroUIComponent())
 		{
 			BP_OnOwningHeroUIComponentInitialized(HeroUIComponent);
+		}
+	}
+}
+
+void UPuraUserWidgetBase::InitEnemyCreatedWidget(AActor* OwningEnemyActor)
+{
+	if(IPawnUIInterface* PawnUIInterface = Cast<IPawnUIInterface>(OwningEnemyActor))
+	{
+		if(UEnemyUIComponent* EnemyUIComponent = PawnUIInterface->GetEnemyUIComponent())
+		{
+			BP_OnOwningEnemyUIComponentInitialized(EnemyUIComponent);
 		}
 	}
 }

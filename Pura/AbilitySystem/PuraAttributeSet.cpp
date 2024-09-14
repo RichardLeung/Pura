@@ -47,6 +47,8 @@ void UPuraAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectMo
 	{
 		const float NewCurrentHealth = FMath::Clamp(GetCurrentHealth() - GetDamageTaken(), 0.0f, GetMaxHealth());
 		SetCurrentHealth(NewCurrentHealth);
+		FString DebugMessage = FString::Printf(TEXT("当前目标:%s"), *Data.Target.GetAvatarActor()->GetActorNameOrLabel());
+		Debug::Print(DebugMessage, FColor::Red, 5.f);
 		Debug::Print("NewCurrentHealth", NewCurrentHealth);
 		// TODO: Notify the UI of the changes
 		PawnUIComponent->OnCurrentHealthChanged.Broadcast(GetCurrentHealth() / GetMaxHealth());

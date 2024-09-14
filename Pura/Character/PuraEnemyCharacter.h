@@ -6,6 +6,7 @@
 #include "PuraBaseCharacter.h"
 #include "PuraEnemyCharacter.generated.h"
 
+class UWidgetComponent;
 class UEnemyCombatComponent;
 class UEnemyUIComponent;
 
@@ -20,9 +21,15 @@ public:
 
 	virtual UPawnCombatComponent* GetPawnCombatComponent() const override;
 
+	UEnemyCombatComponent* GetEnemyCombatComponent() const;
+
 	virtual UPawnUIComponent* GetPawnUIComponent() const override;
 
+	UEnemyUIComponent* GetEnemyUIComponent() const;
+
 protected:
+	virtual void BeginPlay() override;
+	
 	virtual void PossessedBy(AController* NewController) override;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
@@ -30,10 +37,10 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI")
 	UEnemyUIComponent* EnemyUIComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI")
+	UWidgetComponent* EnemyHealthWidgetComponent;
 	
 private:
 	void InitEnemyStartUpData();
-	
-public:
-	FORCEINLINE UEnemyCombatComponent* GetEnemyCombatComponent() const { return EnemyCombatComponent; }
 };
