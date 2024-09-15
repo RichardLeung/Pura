@@ -20,6 +20,7 @@ public class Pura : ModuleRules
             "GameplayTasks",
             "UMG",
             "CommonUI",
+            "AIModule"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] { "GameplayAbilities" });

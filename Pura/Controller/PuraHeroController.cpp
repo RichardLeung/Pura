@@ -2,3 +2,13 @@
 
 
 #include "PuraHeroController.h"
+
+APuraHeroController::APuraHeroController()
+{
+	HeroTeamID = FGenericTeamId(0);
+}
+
+FGenericTeamId APuraHeroController::GetGenericTeamId() const
+{
+	return HeroTeamID;
+}
