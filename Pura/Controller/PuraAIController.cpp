@@ -11,11 +11,6 @@
 APuraAIController::APuraAIController(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer.SetDefaultSubobjectClass<UCrowdFollowingComponent>("PathFollowingComponent"))
 {
-	if(UCrowdFollowingComponent* CrowdComp = Cast<UCrowdFollowingComponent>(GetPathFollowingComponent()))
-	{
-		Debug::Print("CrowdFollowingComponent is set", FColor::Green);
-	}
-
 	AISightConfig_Sight = CreateDefaultSubobject<UAISenseConfig_Sight>(TEXT("EnemySightConfig_Sight"));
 	AISightConfig_Sight->DetectionByAffiliation.bDetectEnemies = true;
 	AISightConfig_Sight->DetectionByAffiliation.bDetectFriendlies = false;
@@ -32,22 +27,46 @@ APuraAIController::APuraAIController(const FObjectInitializer& ObjectInitializer
 	SetGenericTeamId(FGenericTeamId(1));
 }
 
+void APuraAIController::BeginPlay()
+{
+	Super::BeginPlay();
+	if(UCrowdFollowingComponent* CrowdComp = Cast<UCrowdFollowingComponent>(GetPathFollowingComponent()))
+	{
+		CrowdComp->SetCrowdSimulationState(bEnableDetourCrowdAvoidance ? ECrowdSimulationState::Enabled : ECrowdSimulationState::Disabled);
+		switch (DetourCrowdAvoidanceQuality)
+		{
+			case 1: CrowdComp->SetCrowdAvoidanceQuality(ECrowdAvoidanceQuality::Low); break;
+			case 2: CrowdComp->SetCrowdAvoidanceQuality(ECrowdAvoidanceQuality::Medium); break;
+			case 3: CrowdComp->SetCrowdAvoidanceQuality(ECrowdAvoidanceQuality::Good); break;
+			case 4: CrowdComp->SetCrowdAvoidanceQuality(ECrowdAvoidanceQuality::High); break;
+			default: break;
+		}
+		CrowdComp->SetAvoidanceGroup(1);
+		CrowdComp->SetGroupsToAvoid(1);
+		CrowdComp->SetCrowdCollisionQueryRange(CollisionQueryRange);
+	}
+}
+
 void APuraAIController::OnEnemyPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus)
 {
-	if(Stimulus.WasSuccessfullySensed() && Actor)
+	if(UBlackboardComponent* BlackboardComponent = GetBlackboardComponent())
 	{
-		if(UBlackboardComponent* BlackboardComponent = GetBlackboardComponent())
+		if(!BlackboardComponent->GetValueAsObject(FName("TargetActor")))
 		{
-			BlackboardComponent->SetValueAsObject(FName("TargetActor"), Actor);
+			if(Stimulus.WasSuccessfullySensed() && Actor)
+			{
+				BlackboardComponent->SetValueAsObject(FName("TargetActor"), Actor);
+			}
 		}
 	}
+	
 }
 
 ETeamAttitude::Type APuraAIController::GetTeamAttitudeTowards(const AActor& Other) const
 {
 	const APawn* PawnToCheck = Cast<APawn>(&Other);
 	const IGenericTeamAgentInterface* OtherTeamAgent = Cast<IGenericTeamAgentInterface>(PawnToCheck->GetController());
-	if(OtherTeamAgent && OtherTeamAgent->GetGenericTeamId().GetId() != GetGenericTeamId().GetId())
+	if(OtherTeamAgent && OtherTeamAgent->GetGenericTeamId().GetId() < GetGenericTeamId().GetId())
 	{
 		return ETeamAttitude::Hostile;
 	}
