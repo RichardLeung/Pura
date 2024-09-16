@@ -2,6 +2,8 @@
 
 
 #include "PuraCharacterAnimInstance.h"
+
+#include "KismetAnimationLibrary.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Pura/Character/PuraBaseCharacter.h"
 
@@ -22,4 +24,8 @@ void UPuraCharacterAnimInstance::NativeThreadSafeUpdateAnimation(float DeltaSeco
 	}
 	GroundSpeed = OwningCharacter->GetVelocity().Size2D();
 	bHasAcceleration = OwningCharacterMovement->GetCurrentAcceleration().Size2D() > 0.0f;
+
+	LocomotionDirection = UKismetAnimationLibrary::CalculateDirection(OwningCharacter->GetVelocity(), OwningCharacter->GetActorRotation());
 }
+
+

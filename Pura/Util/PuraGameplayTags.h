@@ -35,6 +35,9 @@ namespace PuraGameplayTags
 	//Enemy Ability Tags
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Ability_Melee);
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Ability_Ranged);
+
+	//Enemy Status Tags
+	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Status_Strafing);
 	
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Weapon);
 

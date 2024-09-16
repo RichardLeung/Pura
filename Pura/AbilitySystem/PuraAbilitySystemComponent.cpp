@@ -54,3 +54,21 @@ void UPuraAbilitySystemComponent::RemoveGrantedHeroWeaponAbilities(UPARAM(ref)TA
 	}
 	InSpecHandlesToRemove.Empty();
 }
+
+bool UPuraAbilitySystemComponent::TryActivateAbilityByTag(FGameplayTag AbilityTagToActivate)
+{
+	check(AbilityTagToActivate.IsValid());
+	TArray<FGameplayAbilitySpec*> FoundAbilitySpecs;
+	GetActivatableGameplayAbilitySpecsByAllMatchingTags(AbilityTagToActivate.GetSingleTagContainer(), FoundAbilitySpecs);
+	if (!FoundAbilitySpecs.IsEmpty())
+	{
+		const int32 RandomIndex = FMath::RandRange(0, FoundAbilitySpecs.Num() - 1);
+		const FGameplayAbilitySpec* FoundAbilitySpec = FoundAbilitySpecs[RandomIndex];
+		check(FoundAbilitySpec);
+		if(!FoundAbilitySpec->IsActive())
+		{
+			return TryActivateAbility(FoundAbilitySpec->Handle);
+		}
+	}
+	return false;
+}
