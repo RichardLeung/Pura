@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Abilities/GameplayAbility.h"
+#include "Pura/Util/PuraEnumType.h"
 #include "PuraGameplayAbility.generated.h"
 
 class UPuraAbilitySystemComponent;
@@ -45,7 +46,7 @@ protected:
 	UFUNCTION(BlueprintPure, Category="Pura|Ability")
 	UPuraAbilitySystemComponent* GetPuraAbilitySystemComponentFromActorInfo() const;
 
-	FActiveGameplayEffectHandle NativeApplyEffectSpecHandleToTarget(AActor* TargetActor, const FGameplayEffectSpecHandle& InSpecHandle);
+	FActiveGameplayEffectHandle NativeApplyEffectSpecHandleToTarget(AActor* TargetActor,const FGameplayEffectSpecHandle& InSpecHandle) const;
 
 	UFUNCTION(BlueprintCallable, Category="Pura|Ability", meta=(DisplayName="Apply Gameplay Effect Spec Handle To Target Actor", ExpandEnumAsExecs="OutSuccessType"))
 	FActiveGameplayEffectHandle BP_ApplyEffectSpecHandleToTarget(AActor* TargetActor, const FGameplayEffectSpecHandle& InSpecHandle, EPuraSuccessType& OutSuccessType);

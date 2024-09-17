@@ -2,10 +2,10 @@
 
 
 #include "PuraGameplayAbility.h"
-
 #include "AbilitySystemBlueprintLibrary.h"
 #include "Pura/AbilitySystem/PuraAbilitySystemComponent.h"
 #include "Pura/Component/Combat/PawnCombatComponent.h"
+#include "Pura/Util/PuraFunctionLibrary.h"
 #include "Pura/Util/PuraEnumType.h"
 
 void UPuraGameplayAbility::OnGiveAbility(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec)
@@ -44,14 +44,16 @@ UPuraAbilitySystemComponent* UPuraGameplayAbility::GetPuraAbilitySystemComponent
 	return Cast<UPuraAbilitySystemComponent>(CurrentActorInfo->AbilitySystemComponent);
 }
 
-FActiveGameplayEffectHandle UPuraGameplayAbility::NativeApplyEffectSpecHandleToTarget(AActor* TargetActor,
-	const FGameplayEffectSpecHandle& InSpecHandle)
+FActiveGameplayEffectHandle UPuraGameplayAbility::NativeApplyEffectSpecHandleToTarget(AActor* TargetActor, const FGameplayEffectSpecHandle& InSpecHandle) const
 {
 	UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor);
-	check(TargetASC && InSpecHandle.IsValid());
+	
+	check(TargetActor && InSpecHandle.IsValid());
+
 	return GetPuraAbilitySystemComponentFromActorInfo()->ApplyGameplayEffectSpecToTarget(
 		*InSpecHandle.Data,
-		TargetASC);
+		TargetASC
+	);
 }
 
 FActiveGameplayEffectHandle UPuraGameplayAbility::BP_ApplyEffectSpecHandleToTarget(AActor* TargetActor,

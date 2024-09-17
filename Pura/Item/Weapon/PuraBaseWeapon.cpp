@@ -5,6 +5,7 @@
 
 #include "Components/BoxComponent.h"
 #include "Pura/Util/PuraDebugHelper.h"
+#include "Pura/Util/PuraFunctionLibrary.h"
 
 
 // Sets default values
@@ -32,11 +33,10 @@ void APuraBaseWeapon::OnWeaponCollisionBeginOverlap(UPrimitiveComponent* Overlap
 	checkf(WeaponOwningPawn, TEXT("Weapon %s has no owning pawn"), *GetName());
 	if (APawn* HitPawn = Cast<APawn>(OtherActor))
 	{
-		if (WeaponOwningPawn != HitPawn)
+		if (UPuraFunctionLibrary::IsTargetPawnHostile(WeaponOwningPawn, HitPawn))
 		{
 			OnWeaponHitTarget.ExecuteIfBound(HitPawn);
 		}
-		// TODO: Implement hit check for enemy characters
 	}
 }
 
@@ -47,10 +47,9 @@ void APuraBaseWeapon::OnWeaponCollisionEndOverlap(UPrimitiveComponent* Overlappe
 	checkf(WeaponOwningPawn, TEXT("Weapon %s has no owning pawn"), *GetName());
 	if (APawn* HitPawn = Cast<APawn>(OtherActor))
 	{
-		if (WeaponOwningPawn != HitPawn)
+		if (UPuraFunctionLibrary::IsTargetPawnHostile(WeaponOwningPawn, HitPawn))
 		{
 			OnWeaponPullFromTarget.ExecuteIfBound(HitPawn);
 		}
-		// TODO: Implement hit check for enemy characters
 	}
 }
