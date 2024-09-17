@@ -21,7 +21,8 @@ public class Pura : ModuleRules
             "UMG",
             "CommonUI",
             "AIModule",
-            "AnimGraphRuntime"
+            "AnimGraphRuntime",
+            "MotionWarping"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] { "GameplayAbilities" });

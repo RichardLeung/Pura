@@ -2,9 +2,9 @@
 
 
 #include "PuraBaseCharacter.h"
-
 #include "Pura/AbilitySystem/PuraAbilitySystemComponent.h"
 #include "Pura/AbilitySystem/PuraAttributeSet.h"
+#include "MotionWarpingComponent.h"
 
 
 // Sets default values
@@ -16,6 +16,7 @@ APuraBaseCharacter::APuraBaseCharacter()
 	GetMesh()->bReceivesDecals = false;
 	PuraAttributeSet = CreateDefaultSubobject<UPuraAttributeSet>(TEXT("PuraAttributeSet"));
 	PuraAbilitySystemComponent = CreateDefaultSubobject<UPuraAbilitySystemComponent>(TEXT("PuraAbilitySystemComponent"));
+	MotionWarpingComponent = CreateDefaultSubobject<UMotionWarpingComponent>(TEXT("MotionWarpingComponent"));
 }
 
 void APuraBaseCharacter::PossessedBy(AController* NewController)
