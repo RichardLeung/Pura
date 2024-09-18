@@ -8,6 +8,7 @@
 #include "PuraFunctionLibrary.generated.h"
 
 struct FGameplayTag;
+struct FScalableFloat;
 class UPawnCombatComponent;
 class UPuraAbilitySystemComponent;
 
@@ -40,4 +41,7 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "Pura|FunctionLibrary")
 	static bool IsTargetPawnHostile(APawn* QueryPawn, APawn* TargetActor);
+
+	UFUNCTION(BlueprintPure, Category = "Pura|FunctionLibrary", meta=(CompactNodeTitle="Get Value At Level"))
+	static float GetScalableFloatValueAtLevel(const FScalableFloat& InScalableFloat, float InLevel = 1.f);
 };

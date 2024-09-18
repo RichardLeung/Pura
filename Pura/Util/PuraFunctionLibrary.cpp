@@ -75,4 +75,9 @@ bool UPuraFunctionLibrary::IsTargetPawnHostile(APawn* QueryPawn, APawn* TargetAc
 	}
 	return false;
 }
+
+float UPuraFunctionLibrary::GetScalableFloatValueAtLevel(const FScalableFloat& InScalableFloat, float InLevel)
+{
+	return InScalableFloat.GetValueAtLevel(InLevel);
+}
 	
