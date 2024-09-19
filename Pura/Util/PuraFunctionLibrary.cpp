@@ -4,8 +4,11 @@
 #include "PuraFunctionLibrary.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "GenericTeamAgentInterface.h"
+#include "PuraGameplayTags.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "Pura/AbilitySystem/PuraAbilitySystemComponent.h"
 #include "Pura/Character/PuraBaseCharacter.h"
+#include "Pura/Util/PuraDebugHelper.h"
 
 UPuraAbilitySystemComponent* UPuraFunctionLibrary::NativeGetPuraASCFromActor(AActor* InActor)
 {
@@ -79,5 +82,36 @@ bool UPuraFunctionLibrary::IsTargetPawnHostile(APawn* QueryPawn, APawn* TargetAc
 float UPuraFunctionLibrary::GetScalableFloatValueAtLevel(const FScalableFloat& InScalableFloat, float InLevel)
 {
 	return InScalableFloat.GetValueAtLevel(InLevel);
+}
+
+FGameplayTag UPuraFunctionLibrary::ComputeHitReactDirectionTag(AActor* InAttacker, AActor* InVictim,
+	float& OutAngleDifference)
+{
+	const FVector VictimForward = InVictim->GetActorForwardVector();
+	const FVector VictimToAttackerNormalized = (InAttacker->GetActorLocation() - InVictim->GetActorLocation()).GetSafeNormal();
+	const float DotResult = FVector::DotProduct(VictimForward, VictimToAttackerNormalized);
+	OutAngleDifference = UKismetMathLibrary::DegAcos(DotResult);
+	const FVector CrossResult = FVector::CrossProduct(VictimForward, VictimToAttackerNormalized);
+	if (CrossResult.Z > 0.f)
+	{
+		OutAngleDifference *= -1.f;
+	}
+	if (OutAngleDifference >= -45.f && OutAngleDifference <= 45.f)
+	{
+		return PuraGameplayTags::Shared_Status_HitReact_Front;
+	}
+	else if (OutAngleDifference > 45.f && OutAngleDifference <= 135.f)
+	{
+		return PuraGameplayTags::Shared_Status_HitReact_Left;
+	}
+	else if (OutAngleDifference < -45.f && OutAngleDifference >= -135.f)
+	{
+		return PuraGameplayTags::Shared_Status_HitReact_Right;
+	}
+	else if (OutAngleDifference > 135.f || OutAngleDifference < -135.f)
+	{
+		return PuraGameplayTags::Shared_Status_HitReact_Back;
+	}
+	return PuraGameplayTags::Shared_Status_HitReact_Front;
 }
 	

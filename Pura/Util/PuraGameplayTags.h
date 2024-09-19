@@ -55,4 +55,8 @@ namespace PuraGameplayTags
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_SetByCaller_BaseDamage);
 
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Status_Dead);
+	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Status_HitReact_Front);
+	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Status_HitReact_Back);
+	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Status_HitReact_Left);
+	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Status_HitReact_Right);
 }
