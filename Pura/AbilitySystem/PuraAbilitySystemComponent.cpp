@@ -3,6 +3,7 @@
 
 #include "PuraAbilitySystemComponent.h"
 #include "Pura/AbilitySystem/Ability/PuraHeroGameplayAbility.h"
+#include "Pura/Util/PuraGameplayTags.h"
 #include "Pura/Util/PuraStructTypes.h"
 
 
@@ -18,7 +19,17 @@ void UPuraAbilitySystemComponent::OnAbilityInputPressed(const FGameplayTag& InIn
 
 void UPuraAbilitySystemComponent::OnAbilityInputReleased(const FGameplayTag& InInputTag)
 {
-	if(!InInputTag.IsValid()) return;
+	if(!InInputTag.IsValid() || !InInputTag.MatchesTag(PuraGameplayTags::InputTag_MustBeHeld))
+	{
+		return;
+	}
+	for (const FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
+    {
+        if(AbilitySpec.DynamicAbilityTags.HasTagExact(InInputTag) && AbilitySpec.IsActive())
+        {
+	        CancelAbilityHandle(AbilitySpec.Handle);
+        }
+    }
 }
 
 void UPuraAbilitySystemComponent::GrantHeroWeaponAbilities(const TArray<FPuraHeroAbilitySet>& InDefaultWeaponAbilities, int32 ApplyLevel, TArray<FGameplayAbilitySpecHandle>& OutGrantedAbilitySpecHandles)
