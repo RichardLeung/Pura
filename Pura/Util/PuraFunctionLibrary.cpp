@@ -114,4 +114,15 @@ FGameplayTag UPuraFunctionLibrary::ComputeHitReactDirectionTag(AActor* InAttacke
 	}
 	return PuraGameplayTags::Shared_Status_HitReact_Front;
 }
+
+bool UPuraFunctionLibrary::IsValidBlock(AActor* InAttacker, AActor* InDefender)
+{
+	check(InAttacker && InDefender);
+	const FVector AttackerForward = InAttacker->GetActorForwardVector();
+	const FVector DefenderForward = InDefender->GetActorForwardVector();
+	const float DotResult = FVector::DotProduct(AttackerForward, DefenderForward);
+	// const FString DebugString = FString::Printf(TEXT("DotResult: %f     Result: %s"), DotResult, DotResult < 0.1f ? TEXT("Is Valid") : TEXT("Is Not Valid"));
+	// Debug::Print(DebugString);
+	return DotResult < -0.1f;
+}
 	

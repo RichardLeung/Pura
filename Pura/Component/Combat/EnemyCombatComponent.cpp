@@ -5,6 +5,7 @@
 
 #include "AbilitySystemBlueprintLibrary.h"
 #include "Pura/Util/PuraDebugHelper.h"
+#include "Pura/Util/PuraFunctionLibrary.h"
 #include "Pura/Util/PuraGameplayTags.h"
 
 void UEnemyCombatComponent::OnWeaponHitTargetActor(AActor* HitActor)
@@ -16,20 +17,24 @@ void UEnemyCombatComponent::OnWeaponHitTargetActor(AActor* HitActor)
 	OverloppedActors.AddUnique(HitActor);
 	// TODO: Implement block check
 	bool bIsValidBlock = false;
-	const bool bIsPlayerBlocking = false;
+	const bool bIsPlayerBlocking = UPuraFunctionLibrary::NativeDoesActorHaveTag(HitActor, PuraGameplayTags::Player_Status_Blocking);
 	const bool bIsMyAttackUnblockable = false;
 	if(bIsPlayerBlocking && !bIsMyAttackUnblockable)
 	{
-		// TODO: check if the block is valid 
+		// TODO: check if the block is valid
+		bIsValidBlock = UPuraFunctionLibrary::IsValidBlock(GetOwningPawn(),HitActor);
 	}
 	FGameplayEventData EventData;
 	EventData.Instigator = GetOwningPawn();
 	EventData.Target = HitActor;
-	
 	if(bIsValidBlock)
 	{
 		// TODO: Implement block logic
-		
+		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
+			HitActor,
+			PuraGameplayTags::Player_Event_SuccessfulBlock,
+			EventData
+		);
 	}else
 	{
 		// TODO: Implement hit logic
