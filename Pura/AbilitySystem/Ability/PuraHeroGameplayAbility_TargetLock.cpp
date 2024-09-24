@@ -2,11 +2,18 @@
 
 
 #include "PuraHeroGameplayAbility_TargetLock.h"
+
+#include "Blueprint/WidgetLayoutLibrary.h"
+#include "Blueprint/WidgetTree.h"
+#include "Components/SizeBox.h"
 #include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Pura/Character/PuraHeroCharacter.h"
 #include "Pura/Controller/PuraHeroController.h"
 #include "Pura/Util/PuraDebugHelper.h"
+#include "Pura/Util/PuraFunctionLibrary.h"
+#include "Pura/Util/PuraGameplayTags.h"
 #include "Pura/Widget/PuraUserWidgetBase.h"
 
 void UPuraHeroGameplayAbility_TargetLock::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
@@ -25,6 +32,30 @@ void UPuraHeroGameplayAbility_TargetLock::EndAbility(const FGameplayAbilitySpecH
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 }
 
+void UPuraHeroGameplayAbility_TargetLock::OnTargetLockTick(float DeltaTime)
+{
+	if(!CurrentLockedActor ||
+		UPuraFunctionLibrary::NativeDoesActorHaveTag(CurrentLockedActor, PuraGameplayTags::Shared_Status_Dead) ||
+		UPuraFunctionLibrary::NativeDoesActorHaveTag(GetHeroCharacterFromActorInfo(), PuraGameplayTags::Shared_Status_Dead))
+	{	
+		CancelTargetLockAbility();
+		return;
+	}
+	SetTargetLockWidgetPosition();
+
+	const bool bShouldOverrideRotation =
+		!UPuraFunctionLibrary::NativeDoesActorHaveTag(GetHeroCharacterFromActorInfo(), PuraGameplayTags::Player_Status_Rolling) ||
+		!UPuraFunctionLibrary::NativeDoesActorHaveTag(GetHeroCharacterFromActorInfo(), PuraGameplayTags::Player_Status_Blocking);
+	if (bShouldOverrideRotation)
+	{
+		const FRotator LookAtRot = UKismetMathLibrary::FindLookAtRotation(GetHeroCharacterFromActorInfo()->GetActorLocation(), CurrentLockedActor->GetActorLocation());
+		const FRotator CurrentControlRot = GetHeroControllerFromActorInfo()->GetControlRotation();
+		const FRotator TargetRot = FMath::RInterpTo(CurrentControlRot, LookAtRot, DeltaTime, TargetLockRotationInterpSpeed);
+		GetHeroControllerFromActorInfo()->SetControlRotation(FRotator(TargetRot.Pitch, TargetRot.Yaw, 0.f));
+		GetHeroCharacterFromActorInfo()->SetActorRotation(FRotator(0.f, TargetRot.Yaw, 0.f));
+	}
+}
+
 void UPuraHeroGameplayAbility_TargetLock::TryLockOnTarget()
 {
 	GetAvailableActorsToLock();
@@ -36,8 +67,8 @@ void UPuraHeroGameplayAbility_TargetLock::TryLockOnTarget()
 	CurrentLockedActor = GetNearestTargetFromAvailableActors(AvailableActorsToLock);
 	if(CurrentLockedActor)
 	{
-		Debug::Print("Locked on target: " + CurrentLockedActor->GetActorNameOrLabel());
 		DrawTargetLockWidget();
+		SetTargetLockWidgetPosition();
 	}else
 	{
 		CancelTargetLockAbility();
@@ -89,6 +120,37 @@ void UPuraHeroGameplayAbility_TargetLock::DrawTargetLockWidget()
 	}
 }
 
+void UPuraHeroGameplayAbility_TargetLock::SetTargetLockWidgetPosition()
+{
+	if (!DrawnTargetLockWidget || !CurrentLockedActor)
+	{
+		CancelTargetLockAbility();
+		return;
+	}
+	FVector2D ScreenPosition;
+	UWidgetLayoutLibrary::ProjectWorldLocationToWidgetPosition(
+		GetHeroControllerFromActorInfo(),
+		CurrentLockedActor->GetActorLocation(),
+		ScreenPosition,
+		true
+		);
+	if (TargetLockWidgetSize == FVector2D::ZeroVector)
+	{
+		DrawnTargetLockWidget->WidgetTree->ForEachWidget(
+		[this](UWidget* FoundWidget)
+		{
+			if (USizeBox* FoundSizeBox = Cast<USizeBox>(FoundWidget))
+			{
+				TargetLockWidgetSize.X = FoundSizeBox->GetWidthOverride();
+				TargetLockWidgetSize.Y = FoundSizeBox->GetHeightOverride();
+			}
+		}
+		);
+	}
+	ScreenPosition -= TargetLockWidgetSize / 2.f;
+	DrawnTargetLockWidget->SetPositionInViewport(ScreenPosition, false);
+}
+
 void UPuraHeroGameplayAbility_TargetLock::CancelTargetLockAbility()
 {
 	CancelAbility(GetCurrentAbilitySpecHandle(), GetCurrentActorInfo(), GetCurrentActivationInfo(), true);
@@ -102,4 +164,6 @@ void UPuraHeroGameplayAbility_TargetLock::CleanUp()
 	{
 		DrawnTargetLockWidget->RemoveFromParent();
 	}
+	DrawnTargetLockWidget = nullptr;
+	TargetLockWidgetSize = FVector2D::ZeroVector;
 }
