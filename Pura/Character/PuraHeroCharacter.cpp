@@ -2,6 +2,8 @@
 
 
 #include "PuraHeroCharacter.h"
+
+#include "AbilitySystemBlueprintLibrary.h"
 #include "EnhancedInputSubsystems.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -98,6 +100,8 @@ void APuraHeroCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 	PuraInputComponent->BindNativeInputAction(InputConfigDataAsset, PuraGameplayTags::InputTag_Move, ETriggerEvent::Triggered, this, &ThisClass::Input_Move);
 	PuraInputComponent->BindNativeInputAction(InputConfigDataAsset, PuraGameplayTags::InputTag_Look, ETriggerEvent::Triggered, this, &ThisClass::Input_Look);
 	PuraInputComponent->BindAbilityInputAction(InputConfigDataAsset, this, &ThisClass::Input_AbilityInputPressed, &ThisClass::Input_AbilityInputReleased);
+	PuraInputComponent->BindNativeInputAction(InputConfigDataAsset, PuraGameplayTags::InputTag_SwitchTarget, ETriggerEvent::Triggered, this, &ThisClass::Input_SwitchTargetTriggered);
+	PuraInputComponent->BindNativeInputAction(InputConfigDataAsset, PuraGameplayTags::InputTag_SwitchTarget, ETriggerEvent::Completed, this, &ThisClass::Input_SwitchTargetCompleted);
 }
 
 void APuraHeroCharacter::Input_Move(const FInputActionValue& Value)
@@ -127,6 +131,21 @@ void APuraHeroCharacter::Input_Look(const FInputActionValue& Value)
 	{
 		AddControllerPitchInput(LookVector.Y);
 	}
+}
+
+void APuraHeroCharacter::Input_SwitchTargetTriggered(const FInputActionValue& Value)
+{
+	SwitchDirection = Value.Get<FVector2D>();
+}
+
+void APuraHeroCharacter::Input_SwitchTargetCompleted(const FInputActionValue& Value)
+{
+	FGameplayEventData Data;
+	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
+		this,
+		SwitchDirection.X > 0.f ? PuraGameplayTags::Player_Event_SwitchTarget_Right : PuraGameplayTags::Player_Event_SwitchTarget_Left,
+		Data
+		);
 }
 
 void APuraHeroCharacter::Input_AbilityInputPressed(FGameplayTag InInputTag)
