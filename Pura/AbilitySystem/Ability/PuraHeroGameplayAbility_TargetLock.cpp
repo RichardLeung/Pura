@@ -49,12 +49,16 @@ void UPuraHeroGameplayAbility_TargetLock::OnTargetLockTick(float DeltaTime)
 	}
 	SetTargetLockWidgetPosition();
 
-	const bool bShouldOverrideRotation =
-		!UPuraFunctionLibrary::NativeDoesActorHaveTag(GetHeroCharacterFromActorInfo(), PuraGameplayTags::Player_Status_Rolling) ||
-		!UPuraFunctionLibrary::NativeDoesActorHaveTag(GetHeroCharacterFromActorInfo(), PuraGameplayTags::Player_Status_Blocking);
+	bool bShouldOverrideRotation = !(UPuraFunctionLibrary::NativeDoesActorHaveTag(GetHeroCharacterFromActorInfo(), PuraGameplayTags::Player_Status_Rolling) ||
+		UPuraFunctionLibrary::NativeDoesActorHaveTag(GetHeroCharacterFromActorInfo(), PuraGameplayTags::Player_Status_Blocking));
+	
 	if (bShouldOverrideRotation)
 	{
-		const FRotator LookAtRot = UKismetMathLibrary::FindLookAtRotation(GetHeroCharacterFromActorInfo()->GetActorLocation(), CurrentLockedActor->GetActorLocation());
+		Debug::Print(TEXT("应该转向"));
+		FRotator LookAtRot = UKismetMathLibrary::FindLookAtRotation(GetHeroCharacterFromActorInfo()->GetActorLocation(), CurrentLockedActor->GetActorLocation());
+
+		LookAtRot -= FRotator(TargetLockCameraOffsetDistance, 0.f, 0.f);
+
 		const FRotator CurrentControlRot = GetHeroControllerFromActorInfo()->GetControlRotation();
 		const FRotator TargetRot = FMath::RInterpTo(CurrentControlRot, LookAtRot, DeltaTime, TargetLockRotationInterpSpeed);
 		GetHeroControllerFromActorInfo()->SetControlRotation(FRotator(TargetRot.Pitch, TargetRot.Yaw, 0.f));
