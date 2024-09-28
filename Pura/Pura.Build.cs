@@ -22,10 +22,11 @@ public class Pura : ModuleRules
             "CommonUI",
             "AIModule",
             "AnimGraphRuntime",
-            "MotionWarping"
+            "MotionWarping",
+            "Niagara"
 		});
 
-		PrivateDependencyModuleNames.AddRange(new string[] { "GameplayAbilities" });
+		PrivateDependencyModuleNames.AddRange(new string[] { "GameplayAbilities", "Niagara" });
 
 		// Uncomment if you are using Slate UI
 		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
