@@ -54,6 +54,7 @@ namespace PuraGameplayTags
 	//Enemy Status Tags
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Status_Strafing);
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Status_UnderAttack);
+	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Status_Unblockable)
 	
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Weapon);
 

@@ -18,7 +18,7 @@ void UEnemyCombatComponent::OnWeaponHitTargetActor(AActor* HitActor)
 	// TODO: Implement block check
 	bool bIsValidBlock = false;
 	const bool bIsPlayerBlocking = UPuraFunctionLibrary::NativeDoesActorHaveTag(HitActor, PuraGameplayTags::Player_Status_Blocking);
-	const bool bIsMyAttackUnblockable = false;
+	const bool bIsMyAttackUnblockable = UPuraFunctionLibrary::NativeDoesActorHaveTag(GetOwningPawn(), PuraGameplayTags::Enemy_Status_Unblockable);
 	if(bIsPlayerBlocking && !bIsMyAttackUnblockable)
 	{
 		// TODO: check if the block is valid
