@@ -125,4 +125,14 @@ bool UPuraFunctionLibrary::IsValidBlock(AActor* InAttacker, AActor* InDefender)
 	// Debug::Print(DebugString);
 	return DotResult < -0.1f;
 }
+
+bool UPuraFunctionLibrary::ApplyGameplayEffectSpecHandleToTarget(AActor* InInstigator, AActor* InTarget,
+	const FGameplayEffectSpecHandle& InGameplayEffectSpecHandle)
+{
+	check(InInstigator && InTarget);
+	UPuraAbilitySystemComponent* SourceASC = NativeGetPuraASCFromActor(InInstigator);
+	UPuraAbilitySystemComponent* TargetASC = NativeGetPuraASCFromActor(InTarget);
+	FActiveGameplayEffectHandle ActiveGameplayEffectHandle = SourceASC->ApplyGameplayEffectSpecToTarget(*InGameplayEffectSpecHandle.Data, TargetASC);
+	return ActiveGameplayEffectHandle.WasSuccessfullyApplied();
+}
 	

@@ -7,6 +7,7 @@
 #include "PuraEnumType.h"
 #include "PuraFunctionLibrary.generated.h"
 
+struct FGameplayEffectSpecHandle;
 struct FGameplayTag;
 struct FScalableFloat;
 class UPawnCombatComponent;
@@ -50,4 +51,7 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "Pura|FunctionLibrary")
 	static bool IsValidBlock(AActor* InAttacker, AActor* InDefender);
+
+	UFUNCTION(BlueprintCallable, Category = "Pura|FunctionLibrary")
+	static bool ApplyGameplayEffectSpecHandleToTarget(AActor* InInstigator, AActor* InTarget,const FGameplayEffectSpecHandle& InGameplayEffectSpecHandle);
 };
