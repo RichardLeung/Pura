@@ -3,6 +3,7 @@
 
 #include "PuraEnemyCharacter.h"
 
+#include "Components/BoxComponent.h"
 #include "Components/WidgetComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Pura/Component/Combat/EnemyCombatComponent.h"
@@ -10,6 +11,7 @@
 #include "Pura/Component/UI/EnemyUIComponent.h"
 #include "Pura/DataAsset/DataAsset_EnemyStartUpData.h"
 #include "Pura/Util/PuraDebugHelper.h"
+#include "Pura/Util/PuraFunctionLibrary.h"
 #include "Pura/Widget/PuraUserWidgetBase.h"
 
 // Sets default values
@@ -33,14 +35,21 @@ APuraEnemyCharacter::APuraEnemyCharacter()
 
 	EnemyHealthWidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("EnemyHealthWidgetComponent"));
 	EnemyHealthWidgetComponent->SetupAttachment(GetMesh());
+
+	LeftHandCollisionBox = CreateDefaultSubobject<UBoxComponent>("LeftHandCollisionBox");
+	LeftHandCollisionBox->SetupAttachment(GetMesh());
+	LeftHandCollisionBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	LeftHandCollisionBox->OnComponentBeginOverlap.AddUniqueDynamic(this, &APuraEnemyCharacter::OnLeftHandCollisionBoxOverlapBegin);
+	LeftHandCollisionBox->OnComponentEndOverlap.AddUniqueDynamic(this, &APuraEnemyCharacter::OnLeftHandCollisionBoxOverlapEnd);
+	
+	RightHandCollisionBox = CreateDefaultSubobject<UBoxComponent>("RightHandCollisionBox");
+	RightHandCollisionBox->SetupAttachment(GetMesh());
+	RightHandCollisionBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	RightHandCollisionBox->OnComponentBeginOverlap.AddUniqueDynamic(this, &APuraEnemyCharacter::OnRightHandCollisionBoxOverlapBegin);
+	RightHandCollisionBox->OnComponentEndOverlap.AddUniqueDynamic(this, &APuraEnemyCharacter::OnRightHandCollisionBoxOverlapEnd);
 }
 
 UPawnCombatComponent* APuraEnemyCharacter::GetPawnCombatComponent() const
-{
-	return EnemyCombatComponent;
-}
-
-UEnemyCombatComponent* APuraEnemyCharacter::GetEnemyCombatComponent() const
 {
 	return EnemyCombatComponent;
 }
@@ -68,6 +77,51 @@ void APuraEnemyCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
 	InitEnemyStartUpData();
+}
+
+#if WITH_EDITOR
+void APuraEnemyCharacter::PostEditChangeProperty(struct FPropertyChangedEvent& PropertyChangedEvent)
+{
+	Super::PostEditChangeProperty(PropertyChangedEvent);
+	if(PropertyChangedEvent.GetMemberPropertyName() == GET_MEMBER_NAME_CHECKED(ThisClass, LeftHandCollisionBoxSocketName))
+	{
+		LeftHandCollisionBox->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, LeftHandCollisionBoxSocketName);
+	}
+	else if(PropertyChangedEvent.GetMemberPropertyName() == GET_MEMBER_NAME_CHECKED(ThisClass, RightHandCollisionBoxSocketName))
+	{
+		RightHandCollisionBox->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, RightHandCollisionBoxSocketName);
+	}
+}
+#endif
+
+void APuraEnemyCharacter::OnLeftHandCollisionBoxOverlapBegin(UPrimitiveComponent* OverlappedComponent,
+                                                             AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+                                                             const FHitResult& SweepResult)
+{
+	if(APawn* HitPawn = Cast<APawn>(OtherActor))
+	{
+		if(UPuraFunctionLibrary::IsTargetPawnHostile(this, HitPawn))
+		{
+			EnemyCombatComponent->OnWeaponHitTargetActor(HitPawn);
+		}
+	}
+}
+
+void APuraEnemyCharacter::OnLeftHandCollisionBoxOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	
+}
+
+void APuraEnemyCharacter::OnRightHandCollisionBoxOverlapBegin(UPrimitiveComponent* OverlappedComponent,
+	AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+	const FHitResult& SweepResult)
+{
+}
+
+void APuraEnemyCharacter::OnRightHandCollisionBoxOverlapEnd(UPrimitiveComponent* OverlappedComponent,
+	AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
 }
 
 void APuraEnemyCharacter::InitEnemyStartUpData()

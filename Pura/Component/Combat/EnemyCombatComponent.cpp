@@ -4,6 +4,8 @@
 #include "EnemyCombatComponent.h"
 
 #include "AbilitySystemBlueprintLibrary.h"
+#include "Components/BoxComponent.h"
+#include "Pura/Character/PuraEnemyCharacter.h"
 #include "Pura/Util/PuraDebugHelper.h"
 #include "Pura/Util/PuraFunctionLibrary.h"
 #include "Pura/Util/PuraGameplayTags.h"
@@ -43,5 +45,25 @@ void UEnemyCombatComponent::OnWeaponHitTargetActor(AActor* HitActor)
 			PuraGameplayTags::Shared_Event_MeleeHit,
 			EventData
 		);
+	}
+}
+
+void UEnemyCombatComponent::ToggleBodyPartCollision(bool bShouldEnable, EToggleDamageType ToggleDamageType)
+{
+	APuraEnemyCharacter* OwningEnemyCharacter = GetOwningPawn<APuraEnemyCharacter>();
+	check(OwningEnemyCharacter);
+	UBoxComponent* LeftHandCollisionBox = OwningEnemyCharacter->GetLeftHandCollisionBox();
+	UBoxComponent* RightHandCollisionBox = OwningEnemyCharacter->GetRightHandCollisionBox();
+	check(LeftHandCollisionBox && RightHandCollisionBox);
+	if(ToggleDamageType == EToggleDamageType::LeftHand)
+	{
+		LeftHandCollisionBox->SetCollisionEnabled(bShouldEnable ? ECollisionEnabled::QueryOnly : ECollisionEnabled::NoCollision);
+	}else if(ToggleDamageType == EToggleDamageType::RightHand)
+	{
+		RightHandCollisionBox->SetCollisionEnabled(bShouldEnable ? ECollisionEnabled::QueryOnly : ECollisionEnabled::NoCollision);
+	}
+	if (!bShouldEnable)
+	{
+		OverloppedActors.Empty();
 	}
 }

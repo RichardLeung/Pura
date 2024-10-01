@@ -14,5 +14,8 @@ class PURA_API UEnemyCombatComponent : public UPawnCombatComponent
 
 public:
 	virtual void OnWeaponHitTargetActor(AActor* HitActor) override;
+
+protected:
+	virtual void ToggleBodyPartCollision(bool bShouldEnable, EToggleDamageType ToggleDamageType) override;
 	
 };

@@ -47,44 +47,12 @@ void UPawnCombatComponent::ToggleWeaponCollision(bool bShouldEnable, EToggleDama
 {
 	if(ToggleDamageType == EToggleDamageType::CurrentEquippedWeapon)
     {
-        if(APuraBaseWeapon* WeaponToToggle = GetCharacterCurrentEquippedWeapon())
-        {
-        	if(bShouldEnable)
-        	{
-        		WeaponToToggle->GetWeaponCollisionBox()->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-        	}else
-        	{
-        		WeaponToToggle->GetWeaponCollisionBox()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-        		
-        		OverloppedActors.Empty();
-        	}
-        }
+		ToggleCurrentEquippedWeaponCollision(bShouldEnable);
     }
-    // else
-    // {
-    //     APuraBaseWeapon* WeaponToToggle = nullptr;
-    //     switch(ToggleDamageType)
-    //     {
-    //     case EToggleDamageType::LeftHand:
-    //         WeaponToToggle = GetCharacterCarriedWeaponByTag(FGameplayTag::RequestGameplayTag(FName("Weapon.LeftHand")));
-    //         break;
-    //     case EToggleDamageType::RightHand:
-    //         WeaponToToggle = GetCharacterCarriedWeaponByTag(FGameplayTag::RequestGameplayTag(FName("Weapon.RightHand")));
-    //         break;
-    //     default:
-    //         break;
-    //     }
-    //     if(WeaponToToggle)
-    //     {
-    //         	if(bShouldEnable)
-    //         	{
-    //         		WeaponToToggle->GetWeaponCollisionBox()->SetCollisionEnabled(ECollisionEnabled::QueryOnly);	
-    //         	}else
-    //         	{
-    //         		WeaponToToggle->GetWeaponCollisionBox()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-    //         	}
-    //     }
-    // }
+    else
+    {
+	    ToggleBodyPartCollision(bShouldEnable, ToggleDamageType);
+    }
 }
 
 void UPawnCombatComponent::OnWeaponHitTargetActor(AActor* HitActor)
@@ -93,6 +61,27 @@ void UPawnCombatComponent::OnWeaponHitTargetActor(AActor* HitActor)
 }
 
 void UPawnCombatComponent::OnWeaponPullFromTargetActor(AActor* InteractedActor)
+{
+	
+}
+
+void UPawnCombatComponent::ToggleCurrentEquippedWeaponCollision(bool bShouldEnable)
+{
+	if(APuraBaseWeapon* WeaponToToggle = GetCharacterCurrentEquippedWeapon())
+	{
+		if(bShouldEnable)
+		{
+			WeaponToToggle->GetWeaponCollisionBox()->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+		}else
+		{
+			WeaponToToggle->GetWeaponCollisionBox()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+        		
+			OverloppedActors.Empty();
+		}
+	}
+}
+
+void UPawnCombatComponent::ToggleBodyPartCollision(bool bShouldEnable, EToggleDamageType ToggleDamageType)
 {
 	
 }
