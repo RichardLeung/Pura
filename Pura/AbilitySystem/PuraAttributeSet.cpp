@@ -38,6 +38,21 @@ void UPuraAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectMo
 	if (Data.EvaluatedData.Attribute == GetCurrentRageAttribute())
 	{
 		SetCurrentRage(FMath::Clamp(GetCurrentRage(), 0.0f, GetMaxRage()));
+
+		if(GetCurrentRage() == GetMaxRage())
+		{
+			UPuraFunctionLibrary::AddGameplayTagToActorIfNone(Data.Target.GetAvatarActor(), PuraGameplayTags::Player_Status_Rage_Full);
+		}
+		else if(GetCurrentRage() == 0.f)
+		{
+			UPuraFunctionLibrary::AddGameplayTagToActorIfNone(Data.Target.GetAvatarActor(), PuraGameplayTags::Player_Status_Rage_None);
+		}
+		else
+		{
+			UPuraFunctionLibrary::RemoveGameplayTagFromActorIfFound(Data.Target.GetAvatarActor(), PuraGameplayTags::Player_Status_Rage_Full);
+			UPuraFunctionLibrary::RemoveGameplayTagFromActorIfFound(Data.Target.GetAvatarActor(), PuraGameplayTags::Player_Status_Rage_None);
+			
+		}
 		if (UHeroUIComponent* HeroUIComponent = CachedPawnUIInterface->GetHeroUIComponent())
 		{
 			HeroUIComponent->OnCurrentRageChanged.Broadcast(GetCurrentRage() / GetMaxRage());
