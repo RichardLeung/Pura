@@ -13,16 +13,11 @@ void UPuraAbilitySystemComponent::OnAbilityInputPressed(const FGameplayTag& InIn
 	for (const FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
 	{
 		if(!AbilitySpec.DynamicAbilityTags.HasTagExact(InInputTag)) continue;
-		if(InInputTag.MatchesTag(PuraGameplayTags::InputTag_Toggleable))
+		if(InInputTag.MatchesTag(PuraGameplayTags::InputTag_Toggleable) && AbilitySpec.IsActive())
 		{
-			if(AbilitySpec.IsActive())
-			{
-				CancelAbilityHandle(AbilitySpec.Handle);
-			}else
-			{
-				TryActivateAbility(AbilitySpec.Handle);
-			}
-		}else
+			CancelAbilityHandle(AbilitySpec.Handle);
+		}
+		else
 		{
 			TryActivateAbility(AbilitySpec.Handle);
 		}
