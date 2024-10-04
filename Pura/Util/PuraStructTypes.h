@@ -30,7 +30,7 @@ struct FPuraHeroSpecialAbilitySet : public FPuraHeroAbilitySet
 	GENERATED_BODY()
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	TSoftObjectPtr<UMaterialInstance> AbilityIconMaterial;
+	TSoftObjectPtr<UMaterialInstance> SoftAbilityIconMaterial;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (Categories="Player.Cooldown"))
 	FGameplayTag AbilityCooldownTag;
