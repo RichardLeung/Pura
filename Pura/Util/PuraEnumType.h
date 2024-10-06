@@ -20,3 +20,18 @@ enum class EPuraSuccessType : uint8
 	Success,
 	Failure,
 };
+
+UENUM()
+enum class EPuraCountDownActionInput : uint8
+{
+	Start,
+	Cancel,
+};
+
+UENUM()
+enum class EPuraCountDownActionOutput : uint8
+{
+	Updated,
+	Completed,
+	Cancelled,
+};

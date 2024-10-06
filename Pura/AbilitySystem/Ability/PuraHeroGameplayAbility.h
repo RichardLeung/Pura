@@ -33,6 +33,10 @@ public:
 		FGameplayTag InCurrentAttackTypeTag,
 		int32 InUsingComboCount
 		);
+
+	UFUNCTION(BlueprintCallable, Category="Pura|Ability")
+	bool GetAbilityRemainingCooldownByTag(FGameplayTag InAbilityCooldownTag, float& OutTotalCooldownTime, float& OutRemainingCooldownTime);
+	
 private:
 	TWeakObjectPtr<APuraHeroCharacter> CachedPuraHeroCharacter;
 	TWeakObjectPtr<APuraHeroController> CachedPuraHeroController;

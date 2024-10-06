@@ -4,6 +4,7 @@
 #include "PuraFunctionLibrary.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "GenericTeamAgentInterface.h"
+#include "PuraCountDownAction.h"
 #include "PuraGameplayTags.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Pura/AbilitySystem/PuraAbilitySystemComponent.h"
@@ -134,5 +135,45 @@ bool UPuraFunctionLibrary::ApplyGameplayEffectSpecHandleToTarget(AActor* InInsti
 	UPuraAbilitySystemComponent* TargetASC = NativeGetPuraASCFromActor(InTarget);
 	FActiveGameplayEffectHandle ActiveGameplayEffectHandle = SourceASC->ApplyGameplayEffectSpecToTarget(*InGameplayEffectSpecHandle.Data, TargetASC);
 	return ActiveGameplayEffectHandle.WasSuccessfullyApplied();
+}
+
+void UPuraFunctionLibrary::CountDown(const UObject* WorldContextObject, float TotalTime, float UpdateInterval,
+	float& OutRemainingTime, EPuraCountDownActionInput CountDownInput, UPARAM(DisplayName="Output") EPuraCountDownActionOutput& CountDownOutput,
+	FLatentActionInfo LatentInfo)
+{
+	UWorld* World = nullptr;
+	if(GEngine)
+	{
+		World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull);
+	}
+	if(!World)
+	{
+		return;
+	}
+	FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
+	FPuraCountDownAction* FoundAction = LatentActionManager.FindExistingAction<FPuraCountDownAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+	if(CountDownInput == EPuraCountDownActionInput::Start)
+	{
+		if (!FoundAction)
+		{
+			LatentActionManager.AddNewAction(
+				LatentInfo.CallbackTarget,
+				LatentInfo.UUID,
+				new FPuraCountDownAction(
+					TotalTime,
+					UpdateInterval,
+					OutRemainingTime,
+					CountDownOutput,
+					LatentInfo
+					));
+		}
+	}
+	if(CountDownInput == EPuraCountDownActionInput::Cancel)
+	{
+		if(FoundAction)
+		{
+			FoundAction->CancelAction();
+		}
+	}
 }
 	
