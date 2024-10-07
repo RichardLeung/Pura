@@ -67,7 +67,6 @@ UHeroUIComponent* APuraHeroCharacter::GetHeroUIComponent() const
 void APuraHeroCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	Debug::Print("Working");
 }
 
 void APuraHeroCharacter::PossessedBy(AController* NewController)
@@ -102,6 +101,7 @@ void APuraHeroCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 	PuraInputComponent->BindAbilityInputAction(InputConfigDataAsset, this, &ThisClass::Input_AbilityInputPressed, &ThisClass::Input_AbilityInputReleased);
 	PuraInputComponent->BindNativeInputAction(InputConfigDataAsset, PuraGameplayTags::InputTag_SwitchTarget, ETriggerEvent::Triggered, this, &ThisClass::Input_SwitchTargetTriggered);
 	PuraInputComponent->BindNativeInputAction(InputConfigDataAsset, PuraGameplayTags::InputTag_SwitchTarget, ETriggerEvent::Completed, this, &ThisClass::Input_SwitchTargetCompleted);
+	PuraInputComponent->BindNativeInputAction(InputConfigDataAsset, PuraGameplayTags::InputTag_PickUp_Stone, ETriggerEvent::Started, this, &ThisClass::Input_PickUpStoneStarted);
 }
 
 void APuraHeroCharacter::Input_Move(const FInputActionValue& Value)
@@ -146,6 +146,15 @@ void APuraHeroCharacter::Input_SwitchTargetCompleted(const FInputActionValue& Va
 		SwitchDirection.X > 0.f ? PuraGameplayTags::Player_Event_SwitchTarget_Right : PuraGameplayTags::Player_Event_SwitchTarget_Left,
 		Data
 		);
+}
+
+void APuraHeroCharacter::Input_PickUpStoneStarted(const FInputActionValue& Value)
+{
+	FGameplayEventData Data;
+	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
+		this,
+		PuraGameplayTags::Player_Event_ConsumeStone,
+		Data);
 }
 
 void APuraHeroCharacter::Input_AbilityInputPressed(FGameplayTag InInputTag)

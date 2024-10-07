@@ -61,6 +61,8 @@ private:
 #pragma region Inputs
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "CharacterData", meta = (AllowPrivateAccess = "true"))
 	UDataAsset_InputConfig* InputConfigDataAsset;
+
+	FVector2D SwitchDirection = FVector2D::ZeroVector;
 	
 	void Input_Move(const FInputActionValue& Value);
 	
@@ -69,7 +71,7 @@ private:
 	void Input_SwitchTargetTriggered(const FInputActionValue& Value);
 	void Input_SwitchTargetCompleted(const FInputActionValue& Value);
 
-	FVector2D SwitchDirection = FVector2D::ZeroVector;
+	void Input_PickUpStoneStarted(const FInputActionValue& Value);
 	
 	void Input_AbilityInputPressed(FGameplayTag InInputTag);
 	
