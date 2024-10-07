@@ -7,6 +7,7 @@
 #include "Pura/Component/Combat/PawnCombatComponent.h"
 #include "Pura/Util/PuraFunctionLibrary.h"
 #include "Pura/Util/PuraEnumType.h"
+#include "Pura/Util/PuraGameplayTags.h"
 
 void UPuraGameplayAbility::OnGiveAbility(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec)
 {
@@ -62,5 +63,36 @@ FActiveGameplayEffectHandle UPuraGameplayAbility::BP_ApplyEffectSpecHandleToTarg
 	FActiveGameplayEffectHandle ActiveGEHandle = NativeApplyEffectSpecHandleToTarget(TargetActor, InSpecHandle);
 	OutSuccessType = ActiveGEHandle.WasSuccessfullyApplied() ? EPuraSuccessType::Success : EPuraSuccessType::Failure;
 	return ActiveGEHandle;
+}
+
+void UPuraGameplayAbility::ApplyGameplayEffectSpecHandleToHitResults(const FGameplayEffectSpecHandle& InSpecHandle,
+	const TArray<FHitResult>& InHitResults)
+{
+	if (InHitResults.IsEmpty())
+	{
+		return;
+	}
+	APawn* OwningPawn = CastChecked<APawn>(GetAvatarActorFromActorInfo());
+	for (const FHitResult& HitResult : InHitResults)
+	{
+		if (APawn* HitPawn = Cast<APawn>(HitResult.GetActor()))
+		{
+			if (UPuraFunctionLibrary::IsTargetPawnHostile(OwningPawn, HitPawn))
+			{
+				FActiveGameplayEffectHandle ActiveGEHandle = NativeApplyEffectSpecHandleToTarget(HitPawn, InSpecHandle);
+				if (ActiveGEHandle.WasSuccessfullyApplied())
+				{
+					FGameplayEventData EventData;
+					EventData.Target = HitPawn;
+					EventData.Instigator = OwningPawn;
+					UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
+						HitPawn,
+						PuraGameplayTags::Shared_Event_HitReact,
+						EventData
+						);
+				}
+			}
+		}
+	}
 }
 

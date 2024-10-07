@@ -46,7 +46,8 @@ namespace PuraGameplayTags
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_SuccessfulBlock);
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_SwitchTarget_Left);
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_SwitchTarget_Right);
-	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_ActivateRage)
+	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_ActivateRage);
+	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_AOE);
 	
 	//Player Status Tags
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_JumpToFinisher);
