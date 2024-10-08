@@ -14,6 +14,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnAbilityIconSlotUpdatedDelegate, 
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnAbilityCooldownBeginDelegate, FGameplayTag, AbilityInputTag, float, TotalCooldownTime, float, RemainingCooldownTime);
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnStoneInteractionDelegate, bool, bShouldDisplayInputkey);
+
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class PURA_API UHeroUIComponent : public UPawnUIComponent
 {
@@ -31,4 +33,7 @@ public:
 
 	UPROPERTY(BlueprintAssignable, BlueprintCallable)
 	FOnAbilityCooldownBeginDelegate OnAbilityCooldownBegin;
+
+	UPROPERTY(BlueprintAssignable, BlueprintCallable)
+	FOnStoneInteractionDelegate OnStoneInteraction;
 };

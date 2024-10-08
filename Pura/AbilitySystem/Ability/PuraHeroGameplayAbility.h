@@ -6,6 +6,7 @@
 #include "PuraGameplayAbility.h"
 #include "PuraHeroGameplayAbility.generated.h"
 
+class UHeroUIComponent;
 class UHeroCombatComponent;
 class APuraHeroController;
 class APuraHeroCharacter;
@@ -25,6 +26,9 @@ public:
 
 	UFUNCTION(BlueprintPure, Category="Pura|Ability")
 	UHeroCombatComponent* GetHeroCombatComponentFromActorInfo();
+
+	UFUNCTION(BlueprintPure, Category="Pura|Ability")
+	UHeroUIComponent* GetHeroUIComponentFromActorInfo();
 
 	UFUNCTION(BlueprintPure, Category="Pura|Ability")
 	FGameplayEffectSpecHandle MakeHeroDamageEffectSpecHandle(

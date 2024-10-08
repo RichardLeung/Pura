@@ -2,15 +2,16 @@
 
 
 #include "PuraHeroGameplayAbility_PickUpStone.h"
-
 #include "Kismet/KismetSystemLibrary.h"
 #include "Pura/Character/PuraHeroCharacter.h"
+#include "Pura/Component/UI/HeroUIComponent.h"
 #include "Pura/Item/PickUp/PuraStoneBase.h"
 
 void UPuraHeroGameplayAbility_PickUpStone::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
                                                            const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo,
                                                            const FGameplayEventData* TriggerEventData)
 {
+	GetHeroUIComponentFromActorInfo()->OnStoneInteraction.Broadcast(true);
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 	
 }
@@ -19,12 +20,13 @@ void UPuraHeroGameplayAbility_PickUpStone::EndAbility(const FGameplayAbilitySpec
 	const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo,
 	bool bReplicateEndAbility, bool bWasCancelled)
 {
+	GetHeroUIComponentFromActorInfo()->OnStoneInteraction.Broadcast(false);
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
-	
 }
 
 void UPuraHeroGameplayAbility_PickUpStone::CollectStone()
 {
+	CollectedStones.Empty();
 	TArray<FHitResult> OutHits;
 	UKismetSystemLibrary::BoxTraceMultiForObjects(
 		GetHeroCharacterFromActorInfo(),
