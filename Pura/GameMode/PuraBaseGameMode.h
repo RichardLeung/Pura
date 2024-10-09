@@ -13,4 +13,6 @@ UCLASS()
 class PURA_API APuraBaseGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
+public:
+	APuraBaseGameMode();
 };

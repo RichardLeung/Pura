@@ -63,8 +63,9 @@ protected:
 
 private:
 	void SetCurrentSurvivalGameModeState(EPuraSurvivalGameModeState InState);
-
 	bool HasFinishedAllWaves() const;
+	void PreLoadNextWaveEnemies();
+	FPuraEnemyWaveSpawnerTableRow* GetCurrentWaveSpawnerTableRow() const;
 	
 	UPROPERTY()
 	EPuraSurvivalGameModeState CurrentSurvivalGameModeState;
@@ -78,7 +79,7 @@ private:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Enemy Wave Spawner", meta = (AllowPrivateAccess = "true"))
 	int32 TotalWavesToSpawn;
 
-	UPROPERTY()
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Enemy Wave Spawner", meta = (AllowPrivateAccess = "true"))
 	int32 CurrentWaveCount = 1;
 
 	UPROPERTY()
@@ -92,4 +93,7 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enemy Wave Spawner", meta = (AllowPrivateAccess = "true"))
 	float WaveCompletedWaitTime = 5.f;
+
+	UPROPERTY()
+	TMap<TSoftClassPtr<APuraEnemyCharacter>, UClass*> PreLoadedEnemyClassMap;
 };

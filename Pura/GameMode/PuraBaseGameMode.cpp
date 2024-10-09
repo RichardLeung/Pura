@@ -2,3 +2,9 @@
 
 
 #include "PuraBaseGameMode.h"
+
+APuraBaseGameMode::APuraBaseGameMode()
+{
+	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bStartWithTickEnabled = true;
+}
