@@ -7,6 +7,7 @@
 #include "PuraEnumType.h"
 #include "PuraFunctionLibrary.generated.h"
 
+class UPuraGameInstance;
 struct FGameplayEffectSpecHandle;
 struct FGameplayTag;
 struct FScalableFloat;
@@ -63,4 +64,7 @@ public:
 		EPuraCountDownActionInput CountDownInput,
 		UPARAM(DisplayName="Output") EPuraCountDownActionOutput& CountDownOutput,
 		FLatentActionInfo LatentInfo);
+
+	UFUNCTION(BlueprintPure, Category = "Pura|FunctionLibrary", meta = (WorldContext = "WorldContextObject"))
+	static UPuraGameInstance* GetPuraGameInstance(const UObject* WorldContextObject);
 };

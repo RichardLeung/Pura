@@ -10,6 +10,7 @@
 #include "Engine/AssetManager.h"
 #include "Pura/Component/UI/EnemyUIComponent.h"
 #include "Pura/DataAsset/DataAsset_EnemyStartUpData.h"
+#include "Pura/GameMode/PuraBaseGameMode.h"
 #include "Pura/Util/PuraDebugHelper.h"
 #include "Pura/Util/PuraFunctionLibrary.h"
 #include "Pura/Widget/PuraUserWidgetBase.h"
@@ -134,15 +135,35 @@ void APuraEnemyCharacter::OnRightHandCollisionBoxOverlapEnd(UPrimitiveComponent*
 void APuraEnemyCharacter::InitEnemyStartUpData()
 {
 	if(CharacterStartUpData.IsNull()) return;
-
+	int32 AbilityApplyLevel = 1;
+	if (APuraBaseGameMode* BaseGameMode = GetWorld()->GetAuthGameMode<APuraBaseGameMode>())
+	{
+		switch (BaseGameMode->GetCurrentGameDifficulty())
+		{
+		case EPuraGameDifficulty::Easy:
+			AbilityApplyLevel = 1;
+			break;
+		case EPuraGameDifficulty::Normal:
+			AbilityApplyLevel = 2;
+			break;
+		case EPuraGameDifficulty::Hard:
+			AbilityApplyLevel = 3;
+			break;
+		case EPuraGameDifficulty::VeryHard:
+			AbilityApplyLevel = 4;
+			break;
+		default:
+			break;
+		}
+	}
 	UAssetManager::GetStreamableManager().RequestAsyncLoad(
 		CharacterStartUpData.ToSoftObjectPath(),
 		FStreamableDelegate::CreateLambda(
-			[this]()
+			[this, AbilityApplyLevel]()
 			{
 				if (UDataAsset_StartUpBase* LoadedData = CharacterStartUpData.Get())
 				{
-					LoadedData->GiveToAbilitySystemComponent(PuraAbilitySystemComponent);
+					LoadedData->GiveToAbilitySystemComponent(PuraAbilitySystemComponent, AbilityApplyLevel);
 				}
 			}
 		)

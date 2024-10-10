@@ -66,6 +66,11 @@ private:
 	bool HasFinishedAllWaves() const;
 	void PreLoadNextWaveEnemies();
 	FPuraEnemyWaveSpawnerTableRow* GetCurrentWaveSpawnerTableRow() const;
+	int32 TrySpawnWaveEnemies();
+	bool ShouldKeepSpawnEnemies() const;
+
+	UFUNCTION()
+	void OnEnemyDestroyed(AActor* DestroyedActor);
 	
 	UPROPERTY()
 	EPuraSurvivalGameModeState CurrentSurvivalGameModeState;
@@ -83,12 +88,21 @@ private:
 	int32 CurrentWaveCount = 1;
 
 	UPROPERTY()
+	int32 CurrentSpawnedEnemiesCounter = 0;
+
+	UPROPERTY()
+	int32 TotalSpawnedEnemiesThisWaveCounter = 0;
+
+	UPROPERTY()
+	TArray<AActor*> TargetPoints;
+
+	UPROPERTY()
 	float TimePassedSinceStart = 0.f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enemy Wave Spawner", meta = (AllowPrivateAccess = "true"))
 	float SpawnNewWaveWaitTime = 5.0f;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enemy Wave Spawner", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Enemy Wave Spawner", meta = (AllowPrivateAccess = "true"))
 	float SpawnEnemyDelayTime = 2.f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enemy Wave Spawner", meta = (AllowPrivateAccess = "true"))
@@ -96,4 +110,8 @@ private:
 
 	UPROPERTY()
 	TMap<TSoftClassPtr<APuraEnemyCharacter>, UClass*> PreLoadedEnemyClassMap;
+
+public:
+	UFUNCTION(BlueprintCallable)
+	void RegisterSpawnEnemies(const TArray<APuraEnemyCharacter*> InSpawnedEnemies);
 };

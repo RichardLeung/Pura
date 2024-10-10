@@ -6,9 +6,11 @@
 #include "GenericTeamAgentInterface.h"
 #include "PuraCountDownAction.h"
 #include "PuraGameplayTags.h"
+#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Pura/AbilitySystem/PuraAbilitySystemComponent.h"
 #include "Pura/Character/PuraBaseCharacter.h"
+#include "Pura/GameInstance/PuraGameInstance.h"
 #include "Pura/Util/PuraDebugHelper.h"
 
 UPuraAbilitySystemComponent* UPuraFunctionLibrary::NativeGetPuraASCFromActor(AActor* InActor)
@@ -175,5 +177,17 @@ void UPuraFunctionLibrary::CountDown(const UObject* WorldContextObject, float To
 			FoundAction->CancelAction();
 		}
 	}
+}
+
+UPuraGameInstance* UPuraFunctionLibrary::GetPuraGameInstance(const UObject* WorldContextObject)
+{
+	if (GEngine)
+	{
+		if (UWorld* World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull))
+		{
+			return World->GetGameInstance<UPuraGameInstance>();
+		}
+	}
+	return nullptr;
 }
 	

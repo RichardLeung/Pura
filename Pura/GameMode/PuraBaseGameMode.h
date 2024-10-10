@@ -4,8 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
+#include "Pura/Util/PuraEnumType.h"
 #include "PuraBaseGameMode.generated.h"
-
 /**
  * 
  */
@@ -15,4 +15,11 @@ class PURA_API APuraBaseGameMode : public AGameModeBase
 	GENERATED_BODY()
 public:
 	APuraBaseGameMode();
+
+protected:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Game Settings")
+	EPuraGameDifficulty CurrentGameDifficulty;
+
+public:
+	FORCEINLINE EPuraGameDifficulty GetCurrentGameDifficulty() const { return CurrentGameDifficulty; }
 };

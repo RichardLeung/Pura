@@ -3,8 +3,12 @@
 
 #include "PuraSurvivalGameMode.h"
 
+#include "NavigationSystem.h"
 #include "Engine/AssetManager.h"
+#include "Engine/TargetPoint.h"
+#include "Kismet/GameplayStatics.h"
 #include "Pura/Character/PuraEnemyCharacter.h"
+#include "Pura/Util/PuraDebugHelper.h"
 
 void APuraSurvivalGameMode::BeginPlay()
 {
@@ -32,8 +36,7 @@ void APuraSurvivalGameMode::Tick(float DeltaSeconds)
 		TimePassedSinceStart += DeltaSeconds;
 		if (TimePassedSinceStart >= SpawnEnemyDelayTime)
 		{
-			// TODO: Handle Spawn New Enemy
-
+			CurrentSpawnedEnemiesCounter += TrySpawnWaveEnemies();
 			TimePassedSinceStart = 0.f;
 			SetCurrentSurvivalGameModeState(EPuraSurvivalGameModeState::InProgress);
 		}
@@ -74,7 +77,7 @@ void APuraSurvivalGameMode::PreLoadNextWaveEnemies()
 	{
 		return;
 	}
-
+	PreLoadedEnemyClassMap.Empty();
 	for (const FPuraEnemyWaveSpawnerInfo& SpawnerInfo : GetCurrentWaveSpawnerTableRow()->EnemyWaveSpawnerInfos)
 	{
 		if (SpawnerInfo.SoftEnemyClassToSpawn.IsNull()) continue;
@@ -97,4 +100,81 @@ FPuraEnemyWaveSpawnerTableRow* APuraSurvivalGameMode::GetCurrentWaveSpawnerTable
 	FPuraEnemyWaveSpawnerTableRow* FoundRow = EnemyWaveSpawnerDataTable->FindRow<FPuraEnemyWaveSpawnerTableRow>(RowName, TEXT(""));
 	checkf(FoundRow, TEXT("Row %s not found in %s"), *RowName.ToString(), *EnemyWaveSpawnerDataTable->GetName());
 	return FoundRow;
+}
+
+int32 APuraSurvivalGameMode::TrySpawnWaveEnemies()
+{
+	if(TargetPoints.IsEmpty())
+	{
+		UGameplayStatics::GetAllActorsOfClass(this, ATargetPoint::StaticClass(), TargetPoints);
+	}
+	checkf(!TargetPoints.IsEmpty(), TEXT("No TargetPoints found in %s"), *GetWorld()->GetName());
+	uint32 EnemiesSpawnedThisTime = 0;
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+	
+	for (const FPuraEnemyWaveSpawnerInfo& SpawnerInfo : GetCurrentWaveSpawnerTableRow()->EnemyWaveSpawnerInfos)
+	{
+		if (SpawnerInfo.SoftEnemyClassToSpawn.IsNull()) continue;
+		if (UClass** LoadedEnemyClass = PreLoadedEnemyClassMap.Find(SpawnerInfo.SoftEnemyClassToSpawn))
+		{
+			// 取最小到最大之间的随机数
+			const int32 NumToSpawn = FMath::RandRange(SpawnerInfo.MinPerSpawnCount, SpawnerInfo.MaxPerSpawnCount);
+			UClass* LoadedClass = PreLoadedEnemyClassMap.FindChecked(SpawnerInfo.SoftEnemyClassToSpawn);
+			for (int32 i = 0; i < NumToSpawn; i++)
+			{
+				const int32 RandomTargetPointIndex = FMath::RandRange(0, TargetPoints.Num()-1);
+				ATargetPoint* TargetPoint = Cast<ATargetPoint>(TargetPoints[RandomTargetPointIndex]);
+				const FVector SpawnLocation = TargetPoint->GetActorLocation();
+				const FRotator SpawnRotation = TargetPoint->GetActorForwardVector().ToOrientationRotator();
+				FVector RandomLocation;
+				UNavigationSystemV1::K2_GetRandomLocationInNavigableRadius(this, SpawnLocation, RandomLocation, 400.f);
+				RandomLocation += FVector(0.f, 0.f, 150.f);
+				APuraEnemyCharacter* SpawnedEnemy = GetWorld()->SpawnActor<APuraEnemyCharacter>(LoadedClass, RandomLocation, SpawnRotation);
+				if(SpawnedEnemy)
+				{
+					SpawnedEnemy->OnDestroyed.AddUniqueDynamic(this, &ThisClass::OnEnemyDestroyed);
+					EnemiesSpawnedThisTime++;
+					TotalSpawnedEnemiesThisWaveCounter++;
+				}
+				if(!ShouldKeepSpawnEnemies())
+				{
+					return EnemiesSpawnedThisTime;
+				}
+			}
+		}
+	}
+	
+	return EnemiesSpawnedThisTime;
+}
+
+bool APuraSurvivalGameMode::ShouldKeepSpawnEnemies() const
+{
+	return TotalSpawnedEnemiesThisWaveCounter < GetCurrentWaveSpawnerTableRow()->TotalEnemyToSpanThisWave;
+}
+
+void APuraSurvivalGameMode::OnEnemyDestroyed(AActor* DestroyedActor)
+{
+	CurrentSpawnedEnemiesCounter--;
+	if (ShouldKeepSpawnEnemies())
+	{
+		CurrentSpawnedEnemiesCounter += TrySpawnWaveEnemies();
+	}else if (CurrentSpawnedEnemiesCounter == 0)
+	{
+		TotalSpawnedEnemiesThisWaveCounter = 0;
+		CurrentSpawnedEnemiesCounter = 0;
+		SetCurrentSurvivalGameModeState(EPuraSurvivalGameModeState::WaveCompleted);
+	}
+}
+
+void APuraSurvivalGameMode::RegisterSpawnEnemies(const TArray<APuraEnemyCharacter*> InSpawnedEnemies)
+{
+	for (APuraEnemyCharacter* SpawnedEnemy : InSpawnedEnemies)
+	{
+		if (SpawnedEnemy)
+		{
+			CurrentSpawnedEnemiesCounter++;
+			SpawnedEnemy->OnDestroyed.AddUniqueDynamic(this, &ThisClass::OnEnemyDestroyed);
+		}
+	}
 }
