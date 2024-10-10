@@ -67,4 +67,7 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "Pura|FunctionLibrary", meta = (WorldContext = "WorldContextObject"))
 	static UPuraGameInstance* GetPuraGameInstance(const UObject* WorldContextObject);
+
+	UFUNCTION(BlueprintCallable, Category = "Pura|FunctionLibrary", meta = (WorldContext = "WorldContextObject"))
+	static void ToggleInputMode(const UObject* WorldContextObject, EPuraInputMode InputMode);
 };

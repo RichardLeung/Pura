@@ -44,3 +44,10 @@ enum class EPuraGameDifficulty : uint8
 	Hard,
 	VeryHard,
 };
+
+UENUM(BlueprintType)
+enum class EPuraInputMode : uint8
+{
+	GameOnly,
+	UIOnly,
+};

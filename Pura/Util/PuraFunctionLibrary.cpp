@@ -190,4 +190,29 @@ UPuraGameInstance* UPuraFunctionLibrary::GetPuraGameInstance(const UObject* Worl
 	}
 	return nullptr;
 }
+
+void UPuraFunctionLibrary::ToggleInputMode(const UObject* WorldContextObject, EPuraInputMode InputMode)
+{
+	APlayerController* PlayerController = nullptr;
+	if (GEngine)
+	{
+		if(UWorld* World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull))
+		{
+			PlayerController = World->GetFirstPlayerController();
+		}
+	}
+	if (PlayerController)
+	{
+		if (InputMode == EPuraInputMode::GameOnly)
+		{
+			PlayerController->SetInputMode(FInputModeGameOnly());
+			PlayerController->bShowMouseCursor = false;
+		}
+		else if(InputMode == EPuraInputMode::UIOnly)
+		{
+			PlayerController->SetInputMode(FInputModeUIOnly());
+			PlayerController->bShowMouseCursor = true;
+		}
+	}
+}
 	
