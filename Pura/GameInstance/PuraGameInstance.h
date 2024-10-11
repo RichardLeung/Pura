@@ -34,7 +34,14 @@ class PURA_API UPuraGameInstance : public UGameInstance
 {
 	GENERATED_BODY()
 
+public:
+	virtual void Init() override;
+
 protected:
+	virtual void OnPreLoadMap(const FString& InMapName);
+
+	virtual void OnDestinationWorld(UWorld* InLoadedWorld);
+	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TArray<FPuraGameLevelSet> GameLevelSets;
 

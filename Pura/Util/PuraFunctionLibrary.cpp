@@ -11,6 +11,7 @@
 #include "Pura/AbilitySystem/PuraAbilitySystemComponent.h"
 #include "Pura/Character/PuraBaseCharacter.h"
 #include "Pura/GameInstance/PuraGameInstance.h"
+#include "Pura/SaveGame/PuraSaveGame.h"
 #include "Pura/Util/PuraDebugHelper.h"
 
 UPuraAbilitySystemComponent* UPuraFunctionLibrary::NativeGetPuraASCFromActor(AActor* InActor)
@@ -214,5 +215,30 @@ void UPuraFunctionLibrary::ToggleInputMode(const UObject* WorldContextObject, EP
 			PlayerController->bShowMouseCursor = true;
 		}
 	}
+}
+
+void UPuraFunctionLibrary::SaveCurrentGameDifficulty(EPuraGameDifficulty CurrentGameDifficulty)
+{
+	USaveGame* SaveGameObject = UGameplayStatics::CreateSaveGameObject(UPuraSaveGame::StaticClass());
+	if (UPuraSaveGame* PuraSaveGameObject = Cast<UPuraSaveGame>(SaveGameObject))
+	{
+		PuraSaveGameObject->SavedCurrentGameDifficulty = CurrentGameDifficulty;
+		const bool bWasSaved = UGameplayStatics::SaveGameToSlot(PuraSaveGameObject, PuraGameplayTags::GameData_SaveGame_Slot_1.GetTag().ToString(), 0);
+	}
+}
+
+bool UPuraFunctionLibrary::TryLoadSavedGameDifficulty(EPuraGameDifficulty& OutSavedGameDifficulty)
+{
+	const FString SlotName = PuraGameplayTags::GameData_SaveGame_Slot_1.GetTag().ToString();
+	if (UGameplayStatics::DoesSaveGameExist(SlotName, 0))
+	{
+		USaveGame* SaveGameObject = UGameplayStatics::LoadGameFromSlot(SlotName, 0);
+		if (const UPuraSaveGame* PuraSaveGameObject = Cast<UPuraSaveGame>(SaveGameObject))
+		{
+			OutSavedGameDifficulty = PuraSaveGameObject->SavedCurrentGameDifficulty;
+			return true;
+		}
+	}
+	return false;
 }
 	

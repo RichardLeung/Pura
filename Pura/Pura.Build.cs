@@ -24,7 +24,8 @@ public class Pura : ModuleRules
             "AnimGraphRuntime",
             "MotionWarping",
             "Niagara",
-            "NavigationSystem"
+            "NavigationSystem",
+            "MoviePlayer"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] { "GameplayAbilities", "Niagara" });

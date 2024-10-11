@@ -9,6 +9,17 @@
 #include "Kismet/GameplayStatics.h"
 #include "Pura/Character/PuraEnemyCharacter.h"
 #include "Pura/Util/PuraDebugHelper.h"
+#include "Pura/Util/PuraFunctionLibrary.h"
+
+void APuraSurvivalGameMode::InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage)
+{
+	Super::InitGame(MapName, Options, ErrorMessage);
+	EPuraGameDifficulty SavedGameDifficulty;
+	if (UPuraFunctionLibrary::TryLoadSavedGameDifficulty(SavedGameDifficulty))
+	{
+		CurrentGameDifficulty = SavedGameDifficulty;
+	}
+}
 
 void APuraSurvivalGameMode::BeginPlay()
 {

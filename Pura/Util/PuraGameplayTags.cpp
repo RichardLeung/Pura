@@ -101,4 +101,5 @@ namespace PuraGameplayTags
 	// Game Data Tags
 	UE_DEFINE_GAMEPLAY_TAG(GameData_Level_MainMenu, "GameData.Level.MainMenu")
 	UE_DEFINE_GAMEPLAY_TAG(GameData_Level_SurvivalGameMode, "GameData.Level.SurvivalGameMode")
+	UE_DEFINE_GAMEPLAY_TAG(GameData_SaveGame_Slot_1, "GameData.SaveGame.Slot.1")
 }

@@ -70,4 +70,10 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Pura|FunctionLibrary", meta = (WorldContext = "WorldContextObject"))
 	static void ToggleInputMode(const UObject* WorldContextObject, EPuraInputMode InputMode);
+
+	UFUNCTION(BlueprintCallable, Category = "Pura|FunctionLibrary")
+	static void SaveCurrentGameDifficulty(EPuraGameDifficulty CurrentGameDifficulty);
+
+	UFUNCTION(BlueprintCallable, Category = "Pura|FunctionLibrary")
+	static bool TryLoadSavedGameDifficulty(EPuraGameDifficulty& OutSavedGameDifficulty);
 };
