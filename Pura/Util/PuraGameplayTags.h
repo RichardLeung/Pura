@@ -62,6 +62,10 @@ namespace PuraGameplayTags
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Rage_Full);
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Rage_None);
 
+	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Spirit_Active);
+	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Spirit_Full);
+	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Spirit_None);
+	
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_SetByCaller_AttackType_Light);
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_SetByCaller_AttackType_Heavy);
 

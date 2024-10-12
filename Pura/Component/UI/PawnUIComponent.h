@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Pura/Component/PawnExtensionComponentBase.h"
+#include "Pura/Util/PuraEnumType.h"
 #include "PawnUIComponent.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPercentChangedDelegate, float, NewPercent);
@@ -16,5 +17,4 @@ class PURA_API UPawnUIComponent : public UPawnExtensionComponentBase
 public:
 	UPROPERTY(BlueprintAssignable)
 	FOnPercentChangedDelegate OnCurrentHealthChanged;
-	
 };

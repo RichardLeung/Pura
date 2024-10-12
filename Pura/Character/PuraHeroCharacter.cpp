@@ -78,26 +78,6 @@ void APuraHeroCharacter::PossessedBy(AController* NewController)
 		if(UDataAsset_StartUpBase* LoadedData = CharacterStartUpData.LoadSynchronous())
 		{
 			int32 AbilityApplyLevel = 1;
-			if (APuraBaseGameMode* BaseGameMode = GetWorld()->GetAuthGameMode<APuraBaseGameMode>())
-			{
-				switch (BaseGameMode->GetCurrentGameDifficulty())
-				{
-					case EPuraGameDifficulty::Easy:
-						AbilityApplyLevel = 4;
-						break;
-					case EPuraGameDifficulty::Normal:
-						AbilityApplyLevel = 3;
-						break;
-					case EPuraGameDifficulty::Hard:
-						AbilityApplyLevel = 2;
-						break;
-					case EPuraGameDifficulty::VeryHard:
-						AbilityApplyLevel = 1;
-						break;
-					default:
-						break;
-				}
-			}
 			LoadedData->GiveToAbilitySystemComponent(PuraAbilitySystemComponent, AbilityApplyLevel);
 		}
 	}

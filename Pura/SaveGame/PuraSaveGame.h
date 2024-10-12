@@ -17,5 +17,5 @@ class PURA_API UPuraSaveGame : public USaveGame
 
 public:
 	UPROPERTY(BlueprintReadOnly)
-	EPuraGameDifficulty SavedCurrentGameDifficulty;
+	int32 SavedCurrentGameDifficulty;
 };

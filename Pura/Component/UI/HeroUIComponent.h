@@ -16,6 +16,10 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnAbilityCooldownBeginDelegate, 
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnStoneInteractionDelegate, bool, bShouldDisplayInputkey);
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnStatusMaxValueChangedDelegate, EPuraHeroStatus, status , float, NewValue);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnStatusCurrentValueChangedDelegate, EPuraHeroStatus, status , float, NewValue);
+
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class PURA_API UHeroUIComponent : public UPawnUIComponent
 {
@@ -24,6 +28,15 @@ class PURA_API UHeroUIComponent : public UPawnUIComponent
 public:
 	UPROPERTY(BlueprintAssignable)
 	FOnPercentChangedDelegate OnCurrentRageChanged;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnPercentChangedDelegate OnCurrentManaChanged;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnPercentChangedDelegate OnCurrentStaminaChanged;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnPercentChangedDelegate OnCurrentRageStarChanged;
 
 	UPROPERTY(BlueprintAssignable, BlueprintCallable)
 	FOnEquippedWeaponChangedDelegate OnEquippedWeaponChanged;
@@ -36,4 +49,7 @@ public:
 
 	UPROPERTY(BlueprintAssignable, BlueprintCallable)
 	FOnStoneInteractionDelegate OnStoneInteraction;
+
+	UPROPERTY(BlueprintAssignable, BlueprintCallable)
+	FOnStatusMaxValueChangedDelegate OnStatusMaxValueChanged;
 };

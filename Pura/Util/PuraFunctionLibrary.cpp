@@ -222,7 +222,24 @@ void UPuraFunctionLibrary::SaveCurrentGameDifficulty(EPuraGameDifficulty Current
 	USaveGame* SaveGameObject = UGameplayStatics::CreateSaveGameObject(UPuraSaveGame::StaticClass());
 	if (UPuraSaveGame* PuraSaveGameObject = Cast<UPuraSaveGame>(SaveGameObject))
 	{
-		PuraSaveGameObject->SavedCurrentGameDifficulty = CurrentGameDifficulty;
+		switch (CurrentGameDifficulty)
+		{
+			case EPuraGameDifficulty::Easy:
+				PuraSaveGameObject->SavedCurrentGameDifficulty = 0;
+				break;
+			case EPuraGameDifficulty::Normal:
+				PuraSaveGameObject->SavedCurrentGameDifficulty = 1;
+				break;
+			case EPuraGameDifficulty::Hard:
+				PuraSaveGameObject->SavedCurrentGameDifficulty = 2;
+				break;
+			case EPuraGameDifficulty::VeryHard:
+				PuraSaveGameObject->SavedCurrentGameDifficulty = 3;
+				break;
+			default:
+				PuraSaveGameObject->SavedCurrentGameDifficulty = 0;
+				break;
+		}
 		const bool bWasSaved = UGameplayStatics::SaveGameToSlot(PuraSaveGameObject, PuraGameplayTags::GameData_SaveGame_Slot_1.GetTag().ToString(), 0);
 	}
 }
@@ -235,7 +252,24 @@ bool UPuraFunctionLibrary::TryLoadSavedGameDifficulty(EPuraGameDifficulty& OutSa
 		USaveGame* SaveGameObject = UGameplayStatics::LoadGameFromSlot(SlotName, 0);
 		if (const UPuraSaveGame* PuraSaveGameObject = Cast<UPuraSaveGame>(SaveGameObject))
 		{
-			OutSavedGameDifficulty = PuraSaveGameObject->SavedCurrentGameDifficulty;
+			switch (PuraSaveGameObject->SavedCurrentGameDifficulty)
+			{
+				case 0:
+					OutSavedGameDifficulty = EPuraGameDifficulty::Easy;
+					break;
+				case 1:
+					OutSavedGameDifficulty = EPuraGameDifficulty::Normal;
+					break;
+				case 2:
+					OutSavedGameDifficulty = EPuraGameDifficulty::Hard;
+					break;
+				case 3:
+					OutSavedGameDifficulty = EPuraGameDifficulty::VeryHard;
+					break;
+				default:
+					OutSavedGameDifficulty = EPuraGameDifficulty::Easy;
+					break;
+			}
 			return true;
 		}
 	}

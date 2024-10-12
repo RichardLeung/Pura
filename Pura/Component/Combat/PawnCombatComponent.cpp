@@ -4,8 +4,11 @@
 #include "PawnCombatComponent.h"
 
 #include "Components/BoxComponent.h"
+#include "Pura/Character/PuraBaseCharacter.h"
 #include "Pura/Item/Weapon/PuraBaseWeapon.h"
 #include "Pura/Util/PuraDebugHelper.h"
+#include "Pura/Util/PuraFunctionLibrary.h"
+#include "Pura/Util/PuraGameplayTags.h"
 
 
 void UPawnCombatComponent::RegisterSpawnedWeapon(FGameplayTag InWeaponTagToRegister,
@@ -53,6 +56,17 @@ void UPawnCombatComponent::ToggleWeaponCollision(bool bShouldEnable, EToggleDama
     {
 	    ToggleBodyPartCollision(bShouldEnable, ToggleDamageType);
     }
+}
+
+void UPawnCombatComponent::ToggleCharacterInvincible(bool bShouldEnable)
+{
+	if(bShouldEnable)
+	{
+		UPuraFunctionLibrary::AddGameplayTagToActorIfNone(GetOwningPawn(), PuraGameplayTags::Shared_Status_Invincible);
+	}else
+	{
+		UPuraFunctionLibrary::RemoveGameplayTagFromActorIfFound(GetOwningPawn(), PuraGameplayTags::Shared_Status_Invincible);
+	}
 }
 
 void UPawnCombatComponent::OnWeaponHitTargetActor(AActor* HitActor)

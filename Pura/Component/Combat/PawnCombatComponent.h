@@ -42,6 +42,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Pura|Combat")
 	void ToggleWeaponCollision(bool bShouldEnable, EToggleDamageType ToggleDamageType = EToggleDamageType::CurrentEquippedWeapon);
 
+	UFUNCTION(BlueprintCallable, Category="Pura|Combat")
+	void ToggleCharacterInvincible(bool bShouldEnable);
+	
 	virtual void OnWeaponHitTargetActor(AActor* HitActor);
 	virtual void OnWeaponPullFromTargetActor(AActor* InteractedActor);
 

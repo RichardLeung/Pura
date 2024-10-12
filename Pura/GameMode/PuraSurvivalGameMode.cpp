@@ -2,7 +2,6 @@
 
 
 #include "PuraSurvivalGameMode.h"
-
 #include "NavigationSystem.h"
 #include "Engine/AssetManager.h"
 #include "Engine/TargetPoint.h"

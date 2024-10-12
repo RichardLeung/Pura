@@ -8,13 +8,13 @@
 
 struct FPuraDamageCapture
 {
-	DECLARE_ATTRIBUTE_CAPTUREDEF(AttackPower);
-	DECLARE_ATTRIBUTE_CAPTUREDEF(DefensePower);
+	DECLARE_ATTRIBUTE_CAPTUREDEF(Attack);
+	DECLARE_ATTRIBUTE_CAPTUREDEF(Defense);
 	DECLARE_ATTRIBUTE_CAPTUREDEF(DamageTaken);
 	FPuraDamageCapture()
     {
-        DEFINE_ATTRIBUTE_CAPTUREDEF(UPuraAttributeSet, AttackPower, Source, false);
-        DEFINE_ATTRIBUTE_CAPTUREDEF(UPuraAttributeSet, DefensePower, Target, false);
+        DEFINE_ATTRIBUTE_CAPTUREDEF(UPuraAttributeSet, Attack, Source, false);
+        DEFINE_ATTRIBUTE_CAPTUREDEF(UPuraAttributeSet, Defense, Target, false);
 		DEFINE_ATTRIBUTE_CAPTUREDEF(UPuraAttributeSet, DamageTaken, Target, false);
     }
 };
@@ -28,20 +28,20 @@ static const FPuraDamageCapture& GetPuraDamageCapture()
 UGEExecCalc_DamageTaken::UGEExecCalc_DamageTaken()
 {
 	/* Slow way of doing capture */
-	// FProperty* AttackPowerProperty = FindFieldChecked<FProperty>(
+	// FProperty* AttackProperty = FindFieldChecked<FProperty>(
 	// 	UPuraAttributeSet::StaticClass(),
-	// 	GET_MEMBER_NAME_CHECKED(UPuraAttributeSet, AttackPower)
+	// 	GET_MEMBER_NAME_CHECKED(UPuraAttributeSet, Attack)
 	// );
-	// FGameplayEffectAttributeCaptureDefinition AttackPowerCaptureDefinition(
-	// 	AttackPowerProperty,
+	// FGameplayEffectAttributeCaptureDefinition AttackCaptureDefinition(
+	// 	AttackProperty,
 	// 	EGameplayEffectAttributeCaptureSource::Source,
 	// 	false
 	// );
-	// RelevantAttributesToCapture.Add(AttackPowerCaptureDefinition);
+	// RelevantAttributesToCapture.Add(AttackCaptureDefinition);
 
 	/* Fast way of doing capture */
-	RelevantAttributesToCapture.Add(GetPuraDamageCapture().AttackPowerDef);
-	RelevantAttributesToCapture.Add(GetPuraDamageCapture().DefensePowerDef);
+	RelevantAttributesToCapture.Add(GetPuraDamageCapture().AttackDef);
+	RelevantAttributesToCapture.Add(GetPuraDamageCapture().DefenseDef);
 	RelevantAttributesToCapture.Add(GetPuraDamageCapture().DamageTakenDef);
 }
 
@@ -63,10 +63,10 @@ void UGEExecCalc_DamageTaken::Execute_Implementation(const FGameplayEffectCustom
 	// Set the target tags
 	EvaluationParameters.TargetTags = EffectSpec.CapturedTargetTags.GetAggregatedTags();
 
-	float SourceAttackPower = 0.f;
-	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(GetPuraDamageCapture().AttackPowerDef, EvaluationParameters, SourceAttackPower);
-	// Debug::Print("SourceAttackPower", SourceAttackPower);
-	float BaseDamage = 0.f;
+	float SourceAttack = 0.f;
+	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(GetPuraDamageCapture().AttackDef, EvaluationParameters, SourceAttack);
+	// Debug::Print("SourceAttack", SourceAttack);
+	float BaseDamage = SourceAttack;
 	int32 UsingLightAttackComboCount = 0;
 	int32 UsingHeavyAttackComboCount = 0;
 	for (const TPair<FGameplayTag, float>& TagMagnitude : EffectSpec.SetByCallerTagMagnitudes)
@@ -85,9 +85,9 @@ void UGEExecCalc_DamageTaken::Execute_Implementation(const FGameplayEffectCustom
 			UsingHeavyAttackComboCount = TagMagnitude.Value;
 		}
 	}
-	float TargetDefensePower = 0.f;
-	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(GetPuraDamageCapture().DefensePowerDef, EvaluationParameters, TargetDefensePower);
-	// Debug::Print("TargetDefensePower", TargetDefensePower);
+	float TargetDefense = 0.f;
+	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(GetPuraDamageCapture().DefenseDef, EvaluationParameters, TargetDefense);
+	// Debug::Print("TargetDefense", TargetDefense);
 	if(UsingLightAttackComboCount != 0)
 	{
 		const float DamageIncreasePercentLight = (UsingLightAttackComboCount - 1) * 0.05 + 1.f;
@@ -98,7 +98,8 @@ void UGEExecCalc_DamageTaken::Execute_Implementation(const FGameplayEffectCustom
 		const float DamageIncreasePercentHeavy = UsingHeavyAttackComboCount * 0.15 + 1.f;
 		BaseDamage *= DamageIncreasePercentHeavy;
 	}
-	const float FinalDamageDone = BaseDamage * SourceAttackPower / TargetDefensePower;
+	const float FinalDamageDone = BaseDamage;
+	
 	Debug::Print("FinalDamageDone", FinalDamageDone);
 	if(FinalDamageDone > 0.f)
 	{

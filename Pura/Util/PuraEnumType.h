@@ -51,3 +51,12 @@ enum class EPuraInputMode : uint8
 	GameOnly,
 	UIOnly,
 };
+
+UENUM(BlueprintType)
+enum class EPuraHeroStatus : uint8
+{
+	MaxHealth,
+	MaxRageStar,
+	MaxSpirit,
+	MaxMana,
+};

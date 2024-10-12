@@ -16,8 +16,17 @@ UPuraAttributeSet::UPuraAttributeSet()
 	InitMaxHealth(1.f);
 	InitCurrentRage(1.f);
 	InitMaxRage(1.f);
-	InitAttackPower(1.f);
-	InitDefensePower(1.f);
+	InitAttack(0.f);
+	InitDefense(0.f);
+	InitCurrentRageStar(0.f);
+	InitMaxRageStar(1.f);
+	InitCurrentStamina(0.f);
+	InitMaxStamina(1.f);
+	InitCurrentMana(0.f);
+	InitMaxMana(1.f);
+	InitStaminaRecoveryRate(1.f);
+	InitCriticalHitChance(0.f);
+	InitCriticalHitDamage(100.f);
 }
 
 void UPuraAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data)
@@ -30,13 +39,69 @@ void UPuraAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectMo
 
 	UPawnUIComponent* PawnUIComponent = CachedPawnUIInterface->GetPawnUIComponent();
 	checkf(PawnUIComponent, TEXT("%s: PawnUIComponent is not valid"), *Data.Target.GetAvatarActor()->GetActorNameOrLabel());
+	
 	if (Data.EvaluatedData.Attribute == GetCurrentHealthAttribute())
-	{;
+	{
+		// 当前生命值变化
 		SetCurrentHealth(FMath::Clamp(GetCurrentHealth(), 0.0f, GetMaxHealth()));
 		PawnUIComponent->OnCurrentHealthChanged.Broadcast(GetCurrentHealth() / GetMaxHealth());
 	}
-	if (Data.EvaluatedData.Attribute == GetCurrentRageAttribute())
+	else if (Data.EvaluatedData.Attribute == GetCurrentManaAttribute()){
+		// 当前法力值变化
+		SetCurrentMana(FMath::Clamp(GetCurrentMana(), 0.0f, GetMaxMana()));
+		if (UHeroUIComponent* HeroUIComponent = CachedPawnUIInterface->GetHeroUIComponent())
+		{
+			HeroUIComponent->OnCurrentManaChanged.Broadcast(GetCurrentMana() / GetMaxMana());
+		}
+	}
+	else if (Data.EvaluatedData.Attribute == GetCurrentRageStarAttribute())
 	{
+		// 当前怒气星值变化
+		SetCurrentRageStar(FMath::Clamp(GetCurrentRageStar(), 0.0f, GetMaxRageStar()));
+		if (UHeroUIComponent* HeroUIComponent = CachedPawnUIInterface->GetHeroUIComponent())
+		{
+			HeroUIComponent->OnCurrentRageStarChanged.Broadcast(GetCurrentRageStar() / GetMaxRageStar());
+		}
+	}
+	else if (Data.EvaluatedData.Attribute == GetCurrentStaminaAttribute())
+	{
+		// 当前体力值变化
+		SetCurrentStamina(FMath::Clamp(GetCurrentStamina(), 0.0f, GetMaxStamina()));
+		if (UHeroUIComponent* HeroUIComponent = CachedPawnUIInterface->GetHeroUIComponent())
+		{
+			HeroUIComponent->OnCurrentStaminaChanged.Broadcast(GetCurrentStamina() / GetMaxStamina());
+		}
+	}
+	else if (Data.EvaluatedData.Attribute == GetMaxHealthAttribute())
+	{
+		// 最大生命值变化
+		SetMaxHealth(FMath::Max(GetMaxHealth(), GetCurrentHealth()));
+		if (UHeroUIComponent* HeroUIComponent = CachedPawnUIInterface->GetHeroUIComponent())
+		{
+			HeroUIComponent->OnStatusMaxValueChanged.Broadcast(EPuraHeroStatus::MaxHealth, GetMaxHealth());
+		}
+	}
+	else if (Data.EvaluatedData.Attribute == GetMaxManaAttribute())
+	{
+		// 最大法力值变化
+		SetMaxMana(FMath::Max(GetMaxMana(), GetCurrentMana()));
+		if (UHeroUIComponent* HeroUIComponent = CachedPawnUIInterface->GetHeroUIComponent())
+		{
+			HeroUIComponent->OnStatusMaxValueChanged.Broadcast(EPuraHeroStatus::MaxMana, GetMaxMana());
+		}
+	}
+	else if (Data.EvaluatedData.Attribute == GetMaxRageStarAttribute())
+	{
+		// 最大怒气星值变化
+		SetMaxRageStar(FMath::Max(GetMaxRageStar(), GetCurrentRageStar()));
+		if (UHeroUIComponent* HeroUIComponent = CachedPawnUIInterface->GetHeroUIComponent())
+		{
+			HeroUIComponent->OnStatusMaxValueChanged.Broadcast(EPuraHeroStatus::MaxRageStar, GetMaxRageStar());
+		}
+	}
+	else if (Data.EvaluatedData.Attribute == GetCurrentRageAttribute())
+	{
+		// 当前怒气值变化
 		SetCurrentRage(FMath::Clamp(GetCurrentRage(), 0.0f, GetMaxRage()));
 
 		if(GetCurrentRage() == GetMaxRage())
@@ -58,18 +123,16 @@ void UPuraAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectMo
 			HeroUIComponent->OnCurrentRageChanged.Broadcast(GetCurrentRage() / GetMaxRage());
 		}
 	}
-	if (Data.EvaluatedData.Attribute == GetDamageTakenAttribute())
+	else if (Data.EvaluatedData.Attribute == GetDamageTakenAttribute())
 	{
+		// 造成伤害
+		Debug::Print("DamageTaken", GetDamageTaken());
 		const float NewCurrentHealth = FMath::Clamp(GetCurrentHealth() - GetDamageTaken(), 0.0f, GetMaxHealth());
 		SetCurrentHealth(NewCurrentHealth);
-		// FString DebugMessage = FString::Printf(TEXT("当前目标:%s"), *Data.Target.GetAvatarActor()->GetActorNameOrLabel());
-		// Debug::Print(DebugMessage, FColor::Red, 5.f);
-		// Debug::Print("NewCurrentHealth", NewCurrentHealth);
-		// TODO: Notify the UI of the changes
 		PawnUIComponent->OnCurrentHealthChanged.Broadcast(GetCurrentHealth() / GetMaxHealth());
-		// TODO: Check if the character is dead
 		if(GetCurrentHealth() == 0)
 		{
+			Debug::Print("Character is dead");
 			UPuraFunctionLibrary::AddGameplayTagToActorIfNone(GetOwningActor(), PuraGameplayTags::Shared_Status_Dead);
 		}
 	}
