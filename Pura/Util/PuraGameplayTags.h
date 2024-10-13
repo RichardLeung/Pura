@@ -35,6 +35,7 @@ namespace PuraGameplayTags
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_SpecialWeaponAbility_Light);
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_SpecialWeaponAbility_Heavy);
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_PickUp_Stone);
+	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Recover_Stamina);
 
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Cooldown_SpecialWeaponAbility_Light);
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Cooldown_SpecialWeaponAbility_Heavy);
@@ -61,10 +62,10 @@ namespace PuraGameplayTags
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Rage_Active);
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Rage_Full);
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Rage_None);
-
-	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Spirit_Active);
-	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Spirit_Full);
-	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Spirit_None);
+	
+	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Recover_Stamina);
+	
+	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Abort_Stamina);
 	
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_SetByCaller_AttackType_Light);
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_SetByCaller_AttackType_Heavy);

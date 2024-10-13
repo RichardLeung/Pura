@@ -36,6 +36,7 @@ namespace PuraGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_SpecialWeaponAbility_Light, "Player.Ability.SpecialWeaponAbility.Light")
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_SpecialWeaponAbility_Heavy, "Player.Ability.SpecialWeaponAbility.Heavy")
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_PickUp_Stone, "Player.Ability.PickUp.Stone")
+	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Recover_Stamina, "Player.Ability.Recover.Stamina")
 
 	UE_DEFINE_GAMEPLAY_TAG(Player_Cooldown_SpecialWeaponAbility_Light, "Player.Cooldown.SpecialWeaponAbility.Light")
 	UE_DEFINE_GAMEPLAY_TAG(Player_Cooldown_SpecialWeaponAbility_Heavy, "Player.Cooldown.SpecialWeaponAbility.Heavy")
@@ -62,6 +63,8 @@ namespace PuraGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG(Player_Status_Rage_Active, "Player.Status.Rage.Active")
 	UE_DEFINE_GAMEPLAY_TAG(Player_Status_Rage_Full, "Player.Status.Rage.Full")
 	UE_DEFINE_GAMEPLAY_TAG(Player_Status_Rage_None, "Player.Status.Rage.None")
+	UE_DEFINE_GAMEPLAY_TAG(Player_Status_Recover_Stamina, "Player.Status.Recover.Stamina")
+	UE_DEFINE_GAMEPLAY_TAG(Player_Status_Abort_Stamina, "Player.Status.Abort.Stamina")
 	
 	UE_DEFINE_GAMEPLAY_TAG(Player_SetByCaller_AttackType_Light, "Player.SetByCaller.AttackType.Light")
 	UE_DEFINE_GAMEPLAY_TAG(Player_SetByCaller_AttackType_Heavy, "Player.SetByCaller.AttackType.Heavy")
