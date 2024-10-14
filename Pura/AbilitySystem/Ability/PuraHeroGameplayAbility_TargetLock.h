@@ -65,7 +65,7 @@ private:
 	float CachedDefaultMaxWalkSpeed = 0.f;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Target Lock")
-	float TargetLockMaxWalkSpeed = 300.f;
+	float TargetLockMaxWalkSpeed = 400.f;
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Target Lock")
 	UInputMappingContext* TargetLockMappingContext;

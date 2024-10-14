@@ -48,17 +48,15 @@ void UPuraHeroGameplayAbility_TargetLock::OnTargetLockTick(float DeltaTime)
 		return;
 	}
 	SetTargetLockWidgetPosition();
-
+	FRotator LookAtRot = UKismetMathLibrary::FindLookAtRotation(GetHeroCharacterFromActorInfo()->GetActorLocation(), CurrentLockedActor->GetActorLocation());
+	LookAtRot -= FRotator(TargetLockCameraOffsetDistance, 0.f, 0.f);
+	const FRotator CurrentControlRot = GetHeroControllerFromActorInfo()->GetControlRotation();
+	const FRotator TargetRot = FMath::RInterpTo(CurrentControlRot, LookAtRot, DeltaTime, TargetLockRotationInterpSpeed);
+	GetHeroControllerFromActorInfo()->SetControlRotation(FRotator(TargetRot.Pitch, TargetRot.Yaw, 0.f));
 	bool bShouldOverrideRotation = !(UPuraFunctionLibrary::NativeDoesActorHaveTag(GetHeroCharacterFromActorInfo(), PuraGameplayTags::Player_Status_Rolling) ||
 		UPuraFunctionLibrary::NativeDoesActorHaveTag(GetHeroCharacterFromActorInfo(), PuraGameplayTags::Player_Status_Blocking));
-	
 	if (bShouldOverrideRotation)
 	{
-		FRotator LookAtRot = UKismetMathLibrary::FindLookAtRotation(GetHeroCharacterFromActorInfo()->GetActorLocation(), CurrentLockedActor->GetActorLocation());
-		LookAtRot -= FRotator(TargetLockCameraOffsetDistance, 0.f, 0.f);
-		const FRotator CurrentControlRot = GetHeroControllerFromActorInfo()->GetControlRotation();
-		const FRotator TargetRot = FMath::RInterpTo(CurrentControlRot, LookAtRot, DeltaTime, TargetLockRotationInterpSpeed);
-		GetHeroControllerFromActorInfo()->SetControlRotation(FRotator(TargetRot.Pitch, TargetRot.Yaw, 0.f));
 		GetHeroCharacterFromActorInfo()->SetActorRotation(FRotator(0.f, TargetRot.Yaw, 0.f));
 	}
 }
