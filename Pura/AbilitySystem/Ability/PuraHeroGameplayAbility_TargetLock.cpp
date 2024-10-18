@@ -48,7 +48,8 @@ void UPuraHeroGameplayAbility_TargetLock::OnTargetLockTick(float DeltaTime)
 		return;
 	}
 	SetTargetLockWidgetPosition();
-	FRotator LookAtRot = UKismetMathLibrary::FindLookAtRotation(GetHeroCharacterFromActorInfo()->GetActorLocation(), CurrentLockedActor->GetActorLocation());
+	FVector TargetLockLocation = FVector(CurrentLockedActor->GetActorLocation().X, CurrentLockedActor->GetActorLocation().Y, GetHeroCharacterFromActorInfo()->GetActorLocation().Z);
+	FRotator LookAtRot = UKismetMathLibrary::FindLookAtRotation(GetHeroCharacterFromActorInfo()->GetActorLocation(), TargetLockLocation);
 	LookAtRot -= FRotator(TargetLockCameraOffsetDistance, 0.f, 0.f);
 	const FRotator CurrentControlRot = GetHeroControllerFromActorInfo()->GetControlRotation();
 	const FRotator TargetRot = FMath::RInterpTo(CurrentControlRot, LookAtRot, DeltaTime, TargetLockRotationInterpSpeed);
