@@ -22,6 +22,7 @@ namespace PuraGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG(InputTag_SpecialWeaponAbility_Light, "InputTag.SpecialWeaponAbility.Light")
 	UE_DEFINE_GAMEPLAY_TAG(InputTag_SpecialWeaponAbility_Heavy, "InputTag.SpecialWeaponAbility.Heavy")
 	UE_DEFINE_GAMEPLAY_TAG(InputTag_PickUp_Stone, "InputTag.PickUp.Stone")
+	UE_DEFINE_GAMEPLAY_TAG(InputTag_Menu, "InputTag.Menu")
 	
 	// Ability Tags
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Equip_Axe, "Player.Ability.Equip.Axe")

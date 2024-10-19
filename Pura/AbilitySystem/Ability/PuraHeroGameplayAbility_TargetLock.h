@@ -7,8 +7,8 @@
 #include "Pura/Util/PuraGameplayTags.h"
 #include "PuraHeroGameplayAbility_TargetLock.generated.h"
 
+class UPuraCommonUserWidgetBase;
 class UInputMappingContext;
-class UPuraUserWidgetBase;
 /**
  * 
  */
@@ -56,7 +56,7 @@ private:
 	bool bShowPersistentDebugShape = false;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Target Lock")
-	TSubclassOf<UPuraUserWidgetBase> TargetLockWidgetClass;
+	TSubclassOf<UPuraCommonUserWidgetBase> TargetLockWidgetClass;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Target Lock")
 	float TargetLockRotationInterpSpeed = 5.f;
@@ -80,7 +80,7 @@ private:
 	AActor* CurrentLockedActor;
 
 	UPROPERTY()
-	UPuraUserWidgetBase* DrawnTargetLockWidget;
+	UPuraCommonUserWidgetBase* DrawnTargetLockWidget;
 
 	UPROPERTY()
 	FVector2D TargetLockWidgetSize = FVector2D::ZeroVector;

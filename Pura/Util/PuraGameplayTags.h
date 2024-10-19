@@ -4,14 +4,15 @@
 
 namespace PuraGameplayTags
 {
-	//Player Input Tags
+	// Player Default Input Tags
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Move);
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Look);
+	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Roll);
+	// Player Combat Input Tags
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_EquipAxe);
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_UnequipAxe);
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_LightAttack_Axe);
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_HeavyAttack_Axe);
-	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Roll);
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_SwitchTarget);
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_MustBeHeld);
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_MustBeHeld_Block);
@@ -21,6 +22,9 @@ namespace PuraGameplayTags
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_SpecialWeaponAbility_Light);
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_SpecialWeaponAbility_Heavy);
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_PickUp_Stone);
+	// Player UI Input Tags
+	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Menu);
+	
 
 	//Player Ability Tags
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Equip_Axe);

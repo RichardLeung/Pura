@@ -17,9 +17,14 @@ class PURA_API APuraHeroController : public APlayerController, public IGenericTe
 public:
 	APuraHeroController();
 
+	virtual void BeginPlay() override;
+
 	//~ Begin IGenericTeamAgentInterface begin
 	virtual FGenericTeamId GetGenericTeamId() const override;
 	//~ End IGenericTeamAgentInterface end
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Pura|Input")
+	bool IsUsingGamepad = false;
 
 private:
 	FGenericTeamId HeroTeamID;
