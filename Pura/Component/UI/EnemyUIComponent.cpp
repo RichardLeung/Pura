@@ -2,11 +2,10 @@
 
 
 #include "EnemyUIComponent.h"
-#include "Pura/Widget/PuraCommonUserWidgetBase.h"
 #include "Pura/Widget/PuraUserWidgetBase.h"
 
 
-void UEnemyUIComponent::RegisterEnemyDrawnWidget(UPuraCommonUserWidgetBase* InWidgetToRegister)
+void UEnemyUIComponent::RegisterEnemyDrawnWidget(UPuraUserWidgetBase* InWidgetToRegister)
 {
 	EnemyDrawnWidgets.Add(InWidgetToRegister);
 }
@@ -17,7 +16,7 @@ void UEnemyUIComponent::RemoveEnemyDrawnWidgetsIfAny()
     {
         return;
     }
-	for (UPuraCommonUserWidgetBase* DrawnWidget : EnemyDrawnWidgets)
+	for (UPuraUserWidgetBase* DrawnWidget : EnemyDrawnWidgets)
     {
         if (DrawnWidget)
         {

@@ -6,7 +6,7 @@
 #include "PawnUIComponent.h"
 #include "EnemyUIComponent.generated.h"
 
-class UPuraCommonUserWidgetBase;
+class UPuraUserWidgetBase;
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class PURA_API UEnemyUIComponent : public UPawnUIComponent
@@ -14,11 +14,11 @@ class PURA_API UEnemyUIComponent : public UPawnUIComponent
 	GENERATED_BODY()
 public:
 	UFUNCTION(BlueprintCallable)
-	void RegisterEnemyDrawnWidget(UPuraCommonUserWidgetBase* InWidgetToRegister);
+	void RegisterEnemyDrawnWidget(UPuraUserWidgetBase* InWidgetToRegister);
 
 	UFUNCTION(BlueprintCallable)
 	void RemoveEnemyDrawnWidgetsIfAny();
 
 private:
-	TArray<UPuraCommonUserWidgetBase*> EnemyDrawnWidgets;
+	TArray<UPuraUserWidgetBase*> EnemyDrawnWidgets;
 };

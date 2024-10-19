@@ -16,7 +16,6 @@
 #include "Pura/Util/PuraDebugHelper.h"
 #include "Pura/Util/PuraFunctionLibrary.h"
 #include "Pura/Util/PuraGameplayTags.h"
-#include "Pura/Widget/PuraCommonUserWidgetBase.h"
 #include "Pura/Widget/PuraUserWidgetBase.h"
 
 void UPuraHeroGameplayAbility_TargetLock::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
@@ -172,7 +171,7 @@ void UPuraHeroGameplayAbility_TargetLock::DrawTargetLockWidget()
 	if(!DrawnTargetLockWidget)
 	{
 		checkf(TargetLockWidgetClass, TEXT("Forgot to set TargetLockWidgetClass"));
-		DrawnTargetLockWidget = CreateWidget<UPuraCommonUserWidgetBase>(GetHeroControllerFromActorInfo(), TargetLockWidgetClass);
+		DrawnTargetLockWidget = CreateWidget<UPuraUserWidgetBase>(GetHeroControllerFromActorInfo(), TargetLockWidgetClass);
 		check(DrawnTargetLockWidget);
 		DrawnTargetLockWidget->AddToViewport();;
 	}
