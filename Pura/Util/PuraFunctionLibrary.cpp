@@ -256,18 +256,23 @@ bool UPuraFunctionLibrary::TryLoadSavedGameDifficulty(EPuraGameDifficulty& OutSa
 			{
 				case 0:
 					OutSavedGameDifficulty = EPuraGameDifficulty::Easy;
+					Debug::Print(TEXT("当前难度为简单"));
 					break;
 				case 1:
 					OutSavedGameDifficulty = EPuraGameDifficulty::Normal;
+					Debug::Print(TEXT("当前难度为普通"));
 					break;
 				case 2:
 					OutSavedGameDifficulty = EPuraGameDifficulty::Hard;
+					Debug::Print(TEXT("当前难度为困难"));
 					break;
 				case 3:
 					OutSavedGameDifficulty = EPuraGameDifficulty::VeryHard;
+					Debug::Print(TEXT("当前难度为非常困难"));
 					break;
 				default:
 					OutSavedGameDifficulty = EPuraGameDifficulty::Easy;
+					Debug::Print(TEXT("当前难度为简单"));
 					break;
 			}
 			return true;

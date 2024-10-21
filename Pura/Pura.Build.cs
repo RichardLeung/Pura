@@ -28,7 +28,7 @@ public class Pura : ModuleRules
             "MoviePlayer"
 		});
 
-		PrivateDependencyModuleNames.AddRange(new string[] { "GameplayAbilities", "Niagara" });
+		PrivateDependencyModuleNames.AddRange(new string[] { "GameplayAbilities", "Niagara", "CommonUI" });
 
 		// Uncomment if you are using Slate UI
 		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
