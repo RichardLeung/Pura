@@ -37,6 +37,11 @@ public:
 	FGameplayAttributeData Experience;
 	ATTRIBUTE_ACCESSORS(UPuraAttributeSet, Experience)
 
+	// 最大经验值
+	UPROPERTY(BlueprintReadOnly, Category = "Pura|Attribute")
+	FGameplayAttributeData MaxExperience;
+	ATTRIBUTE_ACCESSORS(UPuraAttributeSet, MaxExperience)
+
 	// 当前生命值
 	UPROPERTY(BlueprintReadOnly, Category = "Pura|Attribute")
 	FGameplayAttributeData CurrentHealth;
@@ -128,20 +133,20 @@ public:
 	FGameplayAttributeData DamageReduction;
 	ATTRIBUTE_ACCESSORS(UPuraAttributeSet, DamageReduction)
 	
-	// // 冰霜抗性
-	// UPROPERTY(BlueprintReadOnly, Category = "Pura|Attribute")
-	// FGameplayAttributeData FrostResistance;
-	// ATTRIBUTE_ACCESSORS(UPuraAttributeSet, FrostResistance)
-	//
-	// // 火焰抗性
-	// UPROPERTY(BlueprintReadOnly, Category = "Pura|Attribute")
-	// FGameplayAttributeData FireResistance;
-	// ATTRIBUTE_ACCESSORS(UPuraAttributeSet, FireResistance)
-	//
-	// // 闪电抗性
-	// UPROPERTY(BlueprintReadOnly, Category = "Pura|Attribute")
-	// FGameplayAttributeData LightningResistance;
-	// ATTRIBUTE_ACCESSORS(UPuraAttributeSet, LightningResistance)
+	// 冰霜抗性
+	UPROPERTY(BlueprintReadOnly, Category = "Pura|Attribute")
+	FGameplayAttributeData FrostResistance;
+	ATTRIBUTE_ACCESSORS(UPuraAttributeSet, FrostResistance)
+	
+	// 火焰抗性
+	UPROPERTY(BlueprintReadOnly, Category = "Pura|Attribute")
+	FGameplayAttributeData FireResistance;
+	ATTRIBUTE_ACCESSORS(UPuraAttributeSet, FireResistance)
+	
+	// 闪电抗性
+	UPROPERTY(BlueprintReadOnly, Category = "Pura|Attribute")
+	FGameplayAttributeData LightningResistance;
+	ATTRIBUTE_ACCESSORS(UPuraAttributeSet, LightningResistance)
 
 private:
 	TWeakInterfacePtr<IPawnUIInterface> CachedPawnUIInterface;
