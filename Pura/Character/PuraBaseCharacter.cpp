@@ -51,3 +51,8 @@ void APuraBaseCharacter::BeginPlay()
 	
 }
 
+void APuraBaseCharacter::Pause()
+{
+	
+}
+

@@ -27,6 +27,16 @@ public:
 
 	virtual void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData &Data) override;
 
+	// 当前等级
+	UPROPERTY(BlueprintReadOnly, Category = "Pura|Attribute")
+	FGameplayAttributeData Level;
+	ATTRIBUTE_ACCESSORS(UPuraAttributeSet, Level)
+
+	// 当前经验值
+	UPROPERTY(BlueprintReadOnly, Category = "Pura|Attribute")
+	FGameplayAttributeData Experience;
+	ATTRIBUTE_ACCESSORS(UPuraAttributeSet, Experience)
+
 	// 当前生命值
 	UPROPERTY(BlueprintReadOnly, Category = "Pura|Attribute")
 	FGameplayAttributeData CurrentHealth;
@@ -127,11 +137,6 @@ public:
 	// UPROPERTY(BlueprintReadOnly, Category = "Pura|Attribute")
 	// FGameplayAttributeData FireResistance;
 	// ATTRIBUTE_ACCESSORS(UPuraAttributeSet, FireResistance)
-	//
-	// // 毒素抗性
-	// UPROPERTY(BlueprintReadOnly, Category = "Pura|Attribute")
-	// FGameplayAttributeData PoisonResistance;
-	// ATTRIBUTE_ACCESSORS(UPuraAttributeSet, PoisonResistance)
 	//
 	// // 闪电抗性
 	// UPROPERTY(BlueprintReadOnly, Category = "Pura|Attribute")

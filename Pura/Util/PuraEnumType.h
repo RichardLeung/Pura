@@ -57,6 +57,16 @@ enum class EPuraHeroStatus : uint8
 {
 	MaxHealth,
 	MaxRageStar,
-	MaxSpirit,
 	MaxMana,
+	Attack,
+	Defense,
+	MaxStamina,
+	StaminaRecoveryRate,
+	CriticalHitChance,
+	CriticalHitDamage,
+	DamageBonus,
+	DamageReduction,
+	Level,
+	Experience,
+	NextLevelExperience,
 };

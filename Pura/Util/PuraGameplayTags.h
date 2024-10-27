@@ -107,7 +107,9 @@ namespace PuraGameplayTags
 
 	// Game Data Tags
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(GameData_Level_MainMenu);
+	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(GameData_Level_MenuGameMode)
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(GameData_Level_SurvivalGameMode);
 
+	// Save Game Tags
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(GameData_SaveGame_Slot_1);
 }

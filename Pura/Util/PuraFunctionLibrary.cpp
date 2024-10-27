@@ -207,12 +207,10 @@ void UPuraFunctionLibrary::ToggleInputMode(const UObject* WorldContextObject, EP
 		if (InputMode == EPuraInputMode::GameOnly)
 		{
 			PlayerController->SetInputMode(FInputModeGameOnly());
-			PlayerController->bShowMouseCursor = false;
 		}
 		else if(InputMode == EPuraInputMode::UIOnly)
 		{
 			PlayerController->SetInputMode(FInputModeUIOnly());
-			PlayerController->bShowMouseCursor = true;
 		}
 	}
 }

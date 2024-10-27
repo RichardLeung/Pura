@@ -49,6 +49,9 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	// 暂停
+	virtual void Pause();
+
 public:
 	FORCEINLINE UPuraAbilitySystemComponent* GetPuraAbilitySystemComponent() const  { return PuraAbilitySystemComponent; }
 
