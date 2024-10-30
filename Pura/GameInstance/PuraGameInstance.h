@@ -5,8 +5,10 @@
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
 #include "Engine/GameInstance.h"
+#include "Pura/Util/PuraStructTypes.h"
 #include "PuraGameInstance.generated.h"
 
+class UDataTable;
 
 USTRUCT(BlueprintType)
 struct FPuraGameLevelSet
@@ -15,7 +17,7 @@ struct FPuraGameLevelSet
 
 	UPROPERTY(EditDefaultsOnly, meta = (Categories = "GameData.Level"))
 	FGameplayTag LevelTag;
-	
+
 	UPROPERTY(EditDefaultsOnly)
 	// TSoftObjectPtr<UWorld> Level;
 	TSoftObjectPtr<UWorld> Level;
@@ -41,12 +43,19 @@ protected:
 	virtual void OnPreLoadMap(const FString& InMapName);
 
 	virtual void OnDestinationWorld(UWorld* InLoadedWorld);
-	
+
+	void LoadDataTable();
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TArray<FPuraGameLevelSet> GameLevelSets;
 
 public:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "基础数据")
+	TObjectPtr<UDataTable> DT_LevelExp;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "基础数据")
+	TMap<FName, FPuraLevelExpRow> LevelExpData;
+
 	UFUNCTION(BlueprintPure, meta = (GameplayTagFilter = "GameData.Level"))
 	TSoftObjectPtr<UWorld> GetGameLevelByTag(const FGameplayTag InLevelTag) const;
-	
 };

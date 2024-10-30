@@ -59,3 +59,17 @@ struct FPuraHeroWeaponData
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TSoftObjectPtr<UTexture2D> SoftWeaponIconTexture;
 };
+
+USTRUCT(BlueprintType)
+struct FPuraLevelExpRow : public FTableRowBase
+{
+	GENERATED_BODY()
+
+	// 等级
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	int32 Level;
+    
+	// 升级所需经验
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly) 
+	int32 RequiredExp;
+};

@@ -5,31 +5,35 @@
 
 #include "AbilitySystemBlueprintLibrary.h"
 #include "Components/BoxComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "Pura/Character/PuraEnemyCharacter.h"
+#include "Pura/Character/PuraHeroCharacter.h"
 #include "Pura/Util/PuraDebugHelper.h"
 #include "Pura/Util/PuraFunctionLibrary.h"
 #include "Pura/Util/PuraGameplayTags.h"
 
 void UEnemyCombatComponent::OnWeaponHitTargetActor(AActor* HitActor)
 {
-	if(OverloppedActors.Contains(HitActor))
+	if (OverloppedActors.Contains(HitActor))
 	{
 		return;
 	}
 	OverloppedActors.AddUnique(HitActor);
 	// TODO: Implement block check
 	bool bIsValidBlock = false;
-	const bool bIsPlayerBlocking = UPuraFunctionLibrary::NativeDoesActorHaveTag(HitActor, PuraGameplayTags::Player_Status_Blocking);
-	const bool bIsMyAttackUnblockable = UPuraFunctionLibrary::NativeDoesActorHaveTag(GetOwningPawn(), PuraGameplayTags::Enemy_Status_Unblockable);
-	if(bIsPlayerBlocking && !bIsMyAttackUnblockable)
+	const bool bIsPlayerBlocking = UPuraFunctionLibrary::NativeDoesActorHaveTag(
+		HitActor, PuraGameplayTags::Player_Status_Blocking);
+	const bool bIsMyAttackUnblockable = UPuraFunctionLibrary::NativeDoesActorHaveTag(
+		GetOwningPawn(), PuraGameplayTags::Enemy_Status_Unblockable);
+	if (bIsPlayerBlocking && !bIsMyAttackUnblockable)
 	{
 		// TODO: check if the block is valid
-		bIsValidBlock = UPuraFunctionLibrary::IsValidBlock(GetOwningPawn(),HitActor);
+		bIsValidBlock = UPuraFunctionLibrary::IsValidBlock(GetOwningPawn(), HitActor);
 	}
 	FGameplayEventData EventData;
 	EventData.Instigator = GetOwningPawn();
 	EventData.Target = HitActor;
-	if(bIsValidBlock)
+	if (bIsValidBlock)
 	{
 		// TODO: Implement block logic
 		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
@@ -37,7 +41,8 @@ void UEnemyCombatComponent::OnWeaponHitTargetActor(AActor* HitActor)
 			PuraGameplayTags::Player_Event_SuccessfulBlock,
 			EventData
 		);
-	}else
+	}
+	else
 	{
 		// TODO: Implement hit logic
 		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
@@ -48,6 +53,16 @@ void UEnemyCombatComponent::OnWeaponHitTargetActor(AActor* HitActor)
 	}
 }
 
+APawn* UEnemyCombatComponent::GetCombatTarget()
+{
+	if (CombatTarget == nullptr)
+	{
+		// 获取 PlayerCharacter
+		CombatTarget = Cast<APawn>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
+	}
+	return CombatTarget;
+}
+
 void UEnemyCombatComponent::ToggleBodyPartCollision(bool bShouldEnable, EToggleDamageType ToggleDamageType)
 {
 	APuraEnemyCharacter* OwningEnemyCharacter = GetOwningPawn<APuraEnemyCharacter>();
@@ -55,12 +70,17 @@ void UEnemyCombatComponent::ToggleBodyPartCollision(bool bShouldEnable, EToggleD
 	UBoxComponent* LeftHandCollisionBox = OwningEnemyCharacter->GetLeftHandCollisionBox();
 	UBoxComponent* RightHandCollisionBox = OwningEnemyCharacter->GetRightHandCollisionBox();
 	check(LeftHandCollisionBox && RightHandCollisionBox);
-	if(ToggleDamageType == EToggleDamageType::LeftHand)
+	if (ToggleDamageType == EToggleDamageType::LeftHand)
 	{
-		LeftHandCollisionBox->SetCollisionEnabled(bShouldEnable ? ECollisionEnabled::QueryOnly : ECollisionEnabled::NoCollision);
-	}else if(ToggleDamageType == EToggleDamageType::RightHand)
+		LeftHandCollisionBox->SetCollisionEnabled(bShouldEnable
+			                                          ? ECollisionEnabled::QueryOnly
+			                                          : ECollisionEnabled::NoCollision);
+	}
+	else if (ToggleDamageType == EToggleDamageType::RightHand)
 	{
-		RightHandCollisionBox->SetCollisionEnabled(bShouldEnable ? ECollisionEnabled::QueryOnly : ECollisionEnabled::NoCollision);
+		RightHandCollisionBox->SetCollisionEnabled(bShouldEnable
+			                                           ? ECollisionEnabled::QueryOnly
+			                                           : ECollisionEnabled::NoCollision);
 	}
 	if (!bShouldEnable)
 	{

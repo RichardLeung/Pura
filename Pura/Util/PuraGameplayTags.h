@@ -24,7 +24,7 @@ namespace PuraGameplayTags
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_PickUp_Stone);
 	// Player UI Input Tags
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Menu);
-	
+
 
 	//Player Ability Tags
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Equip_Axe);
@@ -40,12 +40,14 @@ namespace PuraGameplayTags
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_SpecialWeaponAbility_Heavy);
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_PickUp_Stone);
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Recover_Stamina);
+	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_IncomeXP);
 
+
+	// Player Cooldown Tags
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Cooldown_SpecialWeaponAbility_Light);
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Cooldown_SpecialWeaponAbility_Heavy);
-	
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Weapon_Axe);
-	
+
 	//Player Event Tags
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_Equip_Axe);
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_Unequip_Axe);
@@ -56,7 +58,7 @@ namespace PuraGameplayTags
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_ActivateRage);
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_AOE);
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_ConsumeStone)
-	
+
 	//Player Status Tags
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_JumpToFinisher);
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Rolling);
@@ -68,7 +70,10 @@ namespace PuraGameplayTags
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Rage_None);
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Recover_Stamina);
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Abort_Stamina);
-	
+
+	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Attribute_IncomeExp);
+
+
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_SetByCaller_AttackType_Light);
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_SetByCaller_AttackType_Heavy);
 
@@ -85,17 +90,17 @@ namespace PuraGameplayTags
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Status_Strafing);
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Status_UnderAttack);
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Status_Unblockable)
-	
+
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Weapon);
 
 	//Shared Tags
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Ability_HitReact);
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Ability_Death);
-	
+
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Event_MeleeHit);
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Event_HitReact);
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Event_SpawnProjectile);
-	
+
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_SetByCaller_BaseDamage);
 
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Status_Dead);
@@ -104,6 +109,8 @@ namespace PuraGameplayTags
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Status_HitReact_Left);
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Status_HitReact_Right);
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Status_Invincible);
+
+	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_SetByCaller_IncomeEXP);
 
 	// Game Data Tags
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(GameData_Level_MainMenu);

@@ -23,7 +23,7 @@ namespace PuraGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG(InputTag_SpecialWeaponAbility_Heavy, "InputTag.SpecialWeaponAbility.Heavy")
 	UE_DEFINE_GAMEPLAY_TAG(InputTag_PickUp_Stone, "InputTag.PickUp.Stone")
 	UE_DEFINE_GAMEPLAY_TAG(InputTag_Menu, "InputTag.Menu")
-	
+
 	// Ability Tags
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Equip_Axe, "Player.Ability.Equip.Axe")
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Unequip_Axe, "Player.Ability.Unequip.Axe")
@@ -38,10 +38,13 @@ namespace PuraGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_SpecialWeaponAbility_Heavy, "Player.Ability.SpecialWeaponAbility.Heavy")
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_PickUp_Stone, "Player.Ability.PickUp.Stone")
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Recover_Stamina, "Player.Ability.Recover.Stamina")
+	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_IncomeXP, "Player.Ability.IncomeXP")
+
+	UE_DEFINE_GAMEPLAY_TAG(Player_Attribute_IncomeXP, "Player.Attribute.IncomeXP")
 
 	UE_DEFINE_GAMEPLAY_TAG(Player_Cooldown_SpecialWeaponAbility_Light, "Player.Cooldown.SpecialWeaponAbility.Light")
 	UE_DEFINE_GAMEPLAY_TAG(Player_Cooldown_SpecialWeaponAbility_Heavy, "Player.Cooldown.SpecialWeaponAbility.Heavy")
-	
+
 	UE_DEFINE_GAMEPLAY_TAG(Player_Weapon_Axe, "Player.Weapon.Axe")
 
 	// Event Tags
@@ -54,7 +57,7 @@ namespace PuraGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG(Player_Event_ActivateRage, "Player.Event.ActivateRage")
 	UE_DEFINE_GAMEPLAY_TAG(Player_Event_AOE, "Player.Event.AOE")
 	UE_DEFINE_GAMEPLAY_TAG(Player_Event_ConsumeStone, "Player.Event.ConsumeStone")
-	
+
 	// Status Tags
 	UE_DEFINE_GAMEPLAY_TAG(Player_Status_JumpToFinisher, "Player.Status.JumpToFinisher")
 	UE_DEFINE_GAMEPLAY_TAG(Player_Status_Rolling, "Player.Status.Rolling")
@@ -66,7 +69,7 @@ namespace PuraGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG(Player_Status_Rage_None, "Player.Status.Rage.None")
 	UE_DEFINE_GAMEPLAY_TAG(Player_Status_Recover_Stamina, "Player.Status.Recover.Stamina")
 	UE_DEFINE_GAMEPLAY_TAG(Player_Status_Abort_Stamina, "Player.Status.Abort.Stamina")
-	
+
 	UE_DEFINE_GAMEPLAY_TAG(Player_SetByCaller_AttackType_Light, "Player.SetByCaller.AttackType.Light")
 	UE_DEFINE_GAMEPLAY_TAG(Player_SetByCaller_AttackType_Heavy, "Player.SetByCaller.AttackType.Heavy")
 
@@ -75,7 +78,7 @@ namespace PuraGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG(Enemy_Ability_Ranged, "Enemy.Ability.Ranged")
 	UE_DEFINE_GAMEPLAY_TAG(Enemy_Ability_SummonEnemies, "Enemy.Ability.SummonEnemies")
 	UE_DEFINE_GAMEPLAY_TAG(Enemy_Ability_SpawnStone, "Enemy.Ability.SpawnStone")
-	
+
 	UE_DEFINE_GAMEPLAY_TAG(Enemy_Weapon, "Enemy.Weapon")
 
 	// Enemy Event Tags
@@ -89,9 +92,11 @@ namespace PuraGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG(Shared_Event_MeleeHit, "Shared.Event.MeleeHit")
 	UE_DEFINE_GAMEPLAY_TAG(Shared_Event_HitReact, "Shared.Event.HitReact")
 	UE_DEFINE_GAMEPLAY_TAG(Shared_Event_SpawnProjectile, "Shared.Event.SpawnProjectile")
-	
+
 	UE_DEFINE_GAMEPLAY_TAG(Shared_Ability_Death, "Shared.Ability.Death")
 	UE_DEFINE_GAMEPLAY_TAG(Shared_Ability_HitReact, "Shared.Ability.HitReact")
+
+	UE_DEFINE_GAMEPLAY_TAG(Shared_SetByCaller_IncomeEXP, "Shared.SetByCaller.IncomeEXP")
 
 	UE_DEFINE_GAMEPLAY_TAG(Shared_SetByCaller_BaseDamage, "Shared.SetByCaller.BaseDamage")
 

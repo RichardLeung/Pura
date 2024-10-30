@@ -15,7 +15,12 @@ class PURA_API UEnemyCombatComponent : public UPawnCombatComponent
 public:
 	virtual void OnWeaponHitTargetActor(AActor* HitActor) override;
 
+	UFUNCTION(BlueprintCallable, Category="Pura|Combat")
+	APawn* GetCombatTarget();
+
 protected:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Pura|Combat")
+	APawn* CombatTarget;
+
 	virtual void ToggleBodyPartCollision(bool bShouldEnable, EToggleDamageType ToggleDamageType) override;
-	
 };

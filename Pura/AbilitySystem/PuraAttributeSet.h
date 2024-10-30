@@ -13,6 +13,7 @@
 	GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
 	GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
+class IPawnCombatInterface;
 class IPawnUIInterface;
 /**
  * 
@@ -25,12 +26,17 @@ class PURA_API UPuraAttributeSet : public UAttributeSet
 public:
 	UPuraAttributeSet();
 
-	virtual void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData &Data) override;
+	virtual void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data) override;
 
 	// 当前等级
 	UPROPERTY(BlueprintReadOnly, Category = "Pura|Attribute")
 	FGameplayAttributeData Level;
 	ATTRIBUTE_ACCESSORS(UPuraAttributeSet, Level)
+
+	// 当前技能点
+	UPROPERTY(BlueprintReadOnly, Category = "Pura|Attribute")
+	FGameplayAttributeData SkillPoints;
+	ATTRIBUTE_ACCESSORS(UPuraAttributeSet, SkillPoints)
 
 	// 当前经验值
 	UPROPERTY(BlueprintReadOnly, Category = "Pura|Attribute")
@@ -92,11 +98,6 @@ public:
 	FGameplayAttributeData Defense;
 	ATTRIBUTE_ACCESSORS(UPuraAttributeSet, Defense)
 
-	// 伤害
-	UPROPERTY(BlueprintReadOnly, Category = "Pura|Attribute")
-	FGameplayAttributeData DamageTaken;
-	ATTRIBUTE_ACCESSORS(UPuraAttributeSet, DamageTaken)
-
 	// 当前气力值
 	UPROPERTY(BlueprintReadOnly, Category = "Pura|Attribute")
 	FGameplayAttributeData CurrentStamina;
@@ -106,7 +107,6 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = "Pura|Attribute")
 	FGameplayAttributeData MaxStamina;
 	ATTRIBUTE_ACCESSORS(UPuraAttributeSet, MaxStamina)
-	
 
 	// 气力恢复
 	UPROPERTY(BlueprintReadOnly, Category = "Pura|Attribute")
@@ -117,7 +117,7 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = "Pura|Attribute")
 	FGameplayAttributeData CriticalHitChance;
 	ATTRIBUTE_ACCESSORS(UPuraAttributeSet, CriticalHitChance)
-	
+
 	// 暴击伤害
 	UPROPERTY(BlueprintReadOnly, Category = "Pura|Attribute")
 	FGameplayAttributeData CriticalHitDamage;
@@ -127,27 +127,39 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = "Pura|Attribute")
 	FGameplayAttributeData DamageBonus;
 	ATTRIBUTE_ACCESSORS(UPuraAttributeSet, DamageBonus)
-	
+
 	// 伤害减免
 	UPROPERTY(BlueprintReadOnly, Category = "Pura|Attribute")
 	FGameplayAttributeData DamageReduction;
 	ATTRIBUTE_ACCESSORS(UPuraAttributeSet, DamageReduction)
-	
+
 	// 冰霜抗性
 	UPROPERTY(BlueprintReadOnly, Category = "Pura|Attribute")
 	FGameplayAttributeData FrostResistance;
 	ATTRIBUTE_ACCESSORS(UPuraAttributeSet, FrostResistance)
-	
+
 	// 火焰抗性
 	UPROPERTY(BlueprintReadOnly, Category = "Pura|Attribute")
 	FGameplayAttributeData FireResistance;
 	ATTRIBUTE_ACCESSORS(UPuraAttributeSet, FireResistance)
-	
+
 	// 闪电抗性
 	UPROPERTY(BlueprintReadOnly, Category = "Pura|Attribute")
 	FGameplayAttributeData LightningResistance;
 	ATTRIBUTE_ACCESSORS(UPuraAttributeSet, LightningResistance)
 
+	// 造成伤害
+	UPROPERTY(BlueprintReadOnly, Category = "Pura|Attribute")
+	FGameplayAttributeData DamageTaken;
+	ATTRIBUTE_ACCESSORS(UPuraAttributeSet, DamageTaken);
+
+	// 获取经验
+	UPROPERTY(BlueprintReadOnly, Category = "Pura|Attribute")
+	FGameplayAttributeData IncomeExp;
+	ATTRIBUTE_ACCESSORS(UPuraAttributeSet, IncomeExp);
+
 private:
 	TWeakInterfacePtr<IPawnUIInterface> CachedPawnUIInterface;
+
+	TWeakInterfacePtr<IPawnCombatInterface> CachedPawnCombatInterface;
 };

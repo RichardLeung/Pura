@@ -16,12 +16,13 @@ UCLASS()
 class PURA_API UDataAsset_StartUpBase : public UDataAsset
 {
 	GENERATED_BODY()
+
 public:
-	 virtual void GiveToAbilitySystemComponent(
-	 	UPuraAbilitySystemComponent* InASCToGive,
-	 	int32 ApplyLevel = 1
-	 	);
-	
+	virtual void GiveToAbilitySystemComponent(
+		UPuraAbilitySystemComponent* InASCToGive,
+		int32 ApplyLevel = 1
+	);
+
 protected:
 	UPROPERTY(EditDefaultsOnly, Category=StartUpData)
 	TArray<TSubclassOf<UPuraGameplayAbility>> ActivateOnGivenAbilities;
@@ -30,11 +31,20 @@ protected:
 	TArray<TSubclassOf<UPuraGameplayAbility>> ReactiveAbilities;
 
 	UPROPERTY(EditDefaultsOnly, Category=StartUpData)
+	TArray<TSubclassOf<UPuraGameplayAbility>> PassiveAbilities;
+
+	UPROPERTY(EditDefaultsOnly, Category=StartUpData)
 	TArray<TSubclassOf<UGameplayEffect>> StartUpGameplayEffects;
+
+	void GrantPassiveAbilities(
+		const TArray<TSubclassOf<UPuraGameplayAbility>>& InPassiveAbilities,
+		UPuraAbilitySystemComponent* InASCToGive,
+		int32 ApplyLevel = 1
+	);
 
 	void GrantAbilities(
 		const TArray<TSubclassOf<UPuraGameplayAbility>>& InAbilitiesToGive,
 		UPuraAbilitySystemComponent* InASCToGive,
 		int32 ApplyLevel = 1
-		);
+	);
 };

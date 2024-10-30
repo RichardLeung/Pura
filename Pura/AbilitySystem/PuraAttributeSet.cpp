@@ -2,9 +2,13 @@
 
 
 #include "PuraAttributeSet.h"
+
+#include "AbilitySystemBlueprintLibrary.h"
 #include "GameplayEffectExtension.h"
+#include "Pura/Component/Combat/EnemyCombatComponent.h"
 #include "Pura/Component/UI/HeroUIComponent.h"
 #include "Pura/Component/UI/PawnUIComponent.h"
+#include "Pura/Interface/PawnCombatInterface.h"
 #include "Pura/Interface/PawnUIInterface.h"
 #include "Pura/Util/PuraDebugHelper.h"
 #include "Pura/Util/PuraFunctionLibrary.h"
@@ -31,22 +35,31 @@ UPuraAttributeSet::UPuraAttributeSet()
 
 void UPuraAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data)
 {
-	if(!CachedPawnUIInterface.IsValid())
+	if (!CachedPawnUIInterface.IsValid())
 	{
-		CachedPawnUIInterface = TWeakInterfacePtr<IPawnUIInterface>(Cast<IPawnUIInterface>(Data.Target.GetAvatarActor()));
+		CachedPawnUIInterface = TWeakInterfacePtr<IPawnUIInterface>(
+			Cast<IPawnUIInterface>(Data.Target.GetAvatarActor()));
 	}
-	checkf(CachedPawnUIInterface.IsValid(), TEXT("%s: CachedPawnUIInterface is not valid"), *Data.Target.GetAvatarActor()->GetActorNameOrLabel());
+	if (!CachedPawnCombatInterface.IsValid())
+	{
+		CachedPawnCombatInterface = TWeakInterfacePtr<IPawnCombatInterface>(
+			Cast<IPawnCombatInterface>(Data.Target.GetAvatarActor()));
+	}
+	checkf(CachedPawnUIInterface.IsValid(), TEXT("%s: CachedPawnUIInterface is not valid"),
+	       *Data.Target.GetAvatarActor()->GetActorNameOrLabel());
 
 	UPawnUIComponent* PawnUIComponent = CachedPawnUIInterface->GetPawnUIComponent();
-	checkf(PawnUIComponent, TEXT("%s: PawnUIComponent is not valid"), *Data.Target.GetAvatarActor()->GetActorNameOrLabel());
-	
+	checkf(PawnUIComponent, TEXT("%s: PawnUIComponent is not valid"),
+	       *Data.Target.GetAvatarActor()->GetActorNameOrLabel());
+
 	if (Data.EvaluatedData.Attribute == GetCurrentHealthAttribute())
 	{
 		// 当前生命值变化
 		SetCurrentHealth(FMath::Clamp(GetCurrentHealth(), 0.0f, GetMaxHealth()));
 		PawnUIComponent->OnCurrentHealthChanged.Broadcast(GetCurrentHealth() / GetMaxHealth());
 	}
-	else if (Data.EvaluatedData.Attribute == GetCurrentManaAttribute()){
+	else if (Data.EvaluatedData.Attribute == GetCurrentManaAttribute())
+	{
 		// 当前法力值变化
 		SetCurrentMana(FMath::Clamp(GetCurrentMana(), 0.0f, GetMaxMana()));
 		if (UHeroUIComponent* HeroUIComponent = CachedPawnUIInterface->GetHeroUIComponent())
@@ -104,19 +117,22 @@ void UPuraAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectMo
 		// 当前怒气值变化
 		SetCurrentRage(FMath::Clamp(GetCurrentRage(), 0.0f, GetMaxRage()));
 
-		if(GetCurrentRage() == GetMaxRage())
+		if (GetCurrentRage() == GetMaxRage())
 		{
-			UPuraFunctionLibrary::AddGameplayTagToActorIfNone(Data.Target.GetAvatarActor(), PuraGameplayTags::Player_Status_Rage_Full);
+			UPuraFunctionLibrary::AddGameplayTagToActorIfNone(Data.Target.GetAvatarActor(),
+			                                                  PuraGameplayTags::Player_Status_Rage_Full);
 		}
-		else if(GetCurrentRage() == 0.f)
+		else if (GetCurrentRage() == 0.f)
 		{
-			UPuraFunctionLibrary::AddGameplayTagToActorIfNone(Data.Target.GetAvatarActor(), PuraGameplayTags::Player_Status_Rage_None);
+			UPuraFunctionLibrary::AddGameplayTagToActorIfNone(Data.Target.GetAvatarActor(),
+			                                                  PuraGameplayTags::Player_Status_Rage_None);
 		}
 		else
 		{
-			UPuraFunctionLibrary::RemoveGameplayTagFromActorIfFound(Data.Target.GetAvatarActor(), PuraGameplayTags::Player_Status_Rage_Full);
-			UPuraFunctionLibrary::RemoveGameplayTagFromActorIfFound(Data.Target.GetAvatarActor(), PuraGameplayTags::Player_Status_Rage_None);
-			
+			UPuraFunctionLibrary::RemoveGameplayTagFromActorIfFound(Data.Target.GetAvatarActor(),
+			                                                        PuraGameplayTags::Player_Status_Rage_Full);
+			UPuraFunctionLibrary::RemoveGameplayTagFromActorIfFound(Data.Target.GetAvatarActor(),
+			                                                        PuraGameplayTags::Player_Status_Rage_None);
 		}
 		if (UHeroUIComponent* HeroUIComponent = CachedPawnUIInterface->GetHeroUIComponent())
 		{
@@ -125,15 +141,25 @@ void UPuraAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectMo
 	}
 	else if (Data.EvaluatedData.Attribute == GetDamageTakenAttribute())
 	{
-		// 造成伤害
-		Debug::Print("DamageTaken", GetDamageTaken());
 		const float NewCurrentHealth = FMath::Clamp(GetCurrentHealth() - GetDamageTaken(), 0.0f, GetMaxHealth());
 		SetCurrentHealth(NewCurrentHealth);
 		PawnUIComponent->OnCurrentHealthChanged.Broadcast(GetCurrentHealth() / GetMaxHealth());
-		if(GetCurrentHealth() == 0)
+		if (GetCurrentHealth() == 0)
 		{
-			Debug::Print("Character is dead");
 			UPuraFunctionLibrary::AddGameplayTagToActorIfNone(GetOwningActor(), PuraGameplayTags::Shared_Status_Dead);
+			UEnemyCombatComponent* CombatComponent = Cast<UEnemyCombatComponent>(
+				CachedPawnCombatInterface->GetPawnCombatComponent());
+			FGameplayEventData Payload;
+			Payload.Instigator = Data.Target.GetAvatarActor();
+			Payload.EventMagnitude = 50.f;
+			Debug::Print(GetOwningActor()->GetActorNameOrLabel());
+			UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(CombatComponent->GetCombatTarget(),
+			                                                         PuraGameplayTags::Shared_SetByCaller_IncomeEXP,
+			                                                         Payload);
 		}
+	}
+	else if (Data.EvaluatedData.Attribute == GetIncomeExpAttribute())
+	{
+		Debug::Print("IncomeExp:", GetIncomeExp());
 	}
 }
