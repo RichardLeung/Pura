@@ -5,9 +5,11 @@
 
 #include "AbilitySystemBlueprintLibrary.h"
 #include "GameplayEffectExtension.h"
+#include "Kismet/GameplayStatics.h"
 #include "Pura/Component/Combat/EnemyCombatComponent.h"
 #include "Pura/Component/UI/HeroUIComponent.h"
 #include "Pura/Component/UI/PawnUIComponent.h"
+#include "Pura/GameInstance/PuraGameInstance.h"
 #include "Pura/Interface/PawnCombatInterface.h"
 #include "Pura/Interface/PawnUIInterface.h"
 #include "Pura/Util/PuraDebugHelper.h"
@@ -160,6 +162,37 @@ void UPuraAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectMo
 	}
 	else if (Data.EvaluatedData.Attribute == GetIncomeExpAttribute())
 	{
-		Debug::Print("IncomeExp:", GetIncomeExp());
+		Debug::Print(TEXT("进入经验值变化"));
+		const float LocalIncomeXP = GetIncomeExp();
+		if (UPuraGameInstance* GameInstance = UPuraFunctionLibrary::GetPuraGameInstance(Data.Target.GetAvatarActor()))
+		{
+			FPuraLevelExpRow CurrentRow = GameInstance->LevelExpData[GetLevel()];
+			if (GetExperience() + LocalIncomeXP >= CurrentRow.RequiredExp)
+			{
+				FPuraLevelExpRow NextRow = GameInstance->LevelExpData[GetLevel() + 1];
+				SetLevel(NextRow.Level);
+				SetMaxExperience(NextRow.RequiredExp);
+				SetExperience(GetExperience() + LocalIncomeXP - CurrentRow.RequiredExp);
+				if (UHeroUIComponent* HeroUIComponent = CachedPawnUIInterface->GetHeroUIComponent())
+				{
+					Debug::Print(TEXT("OnStatusMaxValueChanged"));
+					HeroUIComponent->OnStatusMaxValueChanged.Broadcast(
+						EPuraHeroStatus::Level, GetLevel());
+					HeroUIComponent->OnStatusMaxValueChanged.Broadcast(
+						EPuraHeroStatus::NextLevelExperience, GetMaxExperience());
+				}
+			}
+			else
+			{
+				SetExperience(GetExperience() + LocalIncomeXP);
+			}
+			if (UHeroUIComponent* HeroUIComponent = CachedPawnUIInterface->GetHeroUIComponent())
+			{
+				Debug::Print(TEXT("OnStatusCurrentValueChanged"));
+				HeroUIComponent->OnStatusCurrentValueChanged.Broadcast(
+					EPuraHeroStatus::Experience, GetExperience());
+			}
+		}
+		SetIncomeExp(0.f);
 	}
 }

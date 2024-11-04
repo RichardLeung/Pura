@@ -14,6 +14,8 @@ class USpringArmComponent;
 class UDataAsset_InputConfig;
 class UHeroUIComponent;
 
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnPlayerStateChanged, int32);
+
 UCLASS()
 class PURA_API APuraHeroCharacter : public APuraBaseCharacter
 {
@@ -78,9 +80,6 @@ private:
 	void Input_AbilityInputReleased(FGameplayTag InInputTag);
 
 #pragma endregion
-
-	UPROPERTY(VisibleAnywhere)
-	int32 Level = 1;
 
 public:
 	FORCEINLINE UHeroCombatComponent* GetHeroCombatComponent() const

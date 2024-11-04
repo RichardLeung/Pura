@@ -119,4 +119,8 @@ namespace PuraGameplayTags
 
 	// Save Game Tags
 	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(GameData_SaveGame_Slot_1);
+	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(GameData_SaveGame_Slot_2);
+	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(GameData_SaveGame_Slot_3);
+	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(GameData_SaveGame_Slot_4);
+	PURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(GameData_SaveGame_Slot_Setting);
 }

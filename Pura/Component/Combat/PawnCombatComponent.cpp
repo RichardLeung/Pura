@@ -14,8 +14,8 @@
 void UPawnCombatComponent::RegisterSpawnedWeapon(FGameplayTag InWeaponTagToRegister,
                                                  APuraBaseWeapon* InWeaponToRegister, bool bRegisterAsEquippedWeapon)
 {
-	checkf(!CharacterCarriedWeaponMap.Contains(InWeaponTagToRegister), TEXT("%s has already been added"), *InWeaponToRegister->GetName());
-	check(InWeaponToRegister);
+	// checkf(!CharacterCarriedWeaponMap.Contains(InWeaponTagToRegister), TEXT("%s has already been added"), *InWeaponToRegister->GetName());
+	// check(InWeaponToRegister);
 	CharacterCarriedWeaponMap.Emplace(InWeaponTagToRegister, InWeaponToRegister);
 	InWeaponToRegister->OnWeaponHitTarget.BindUObject(this, &ThisClass::OnWeaponHitTargetActor);
 	InWeaponToRegister->OnWeaponPullFromTarget.BindUObject(this, &ThisClass::OnWeaponPullFromTargetActor);

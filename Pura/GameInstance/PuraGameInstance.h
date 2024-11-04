@@ -8,6 +8,7 @@
 #include "Pura/Util/PuraStructTypes.h"
 #include "PuraGameInstance.generated.h"
 
+class UPuraSaveGame;
 class UDataTable;
 
 USTRUCT(BlueprintType)
@@ -49,12 +50,15 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TArray<FPuraGameLevelSet> GameLevelSets;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "存储数据")
+	UPuraSaveGame* CurrentSaveGame;
+
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "基础数据")
 	TObjectPtr<UDataTable> DT_LevelExp;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "基础数据")
-	TMap<FName, FPuraLevelExpRow> LevelExpData;
+	TArray<FPuraLevelExpRow> LevelExpData;
 
 	UFUNCTION(BlueprintPure, meta = (GameplayTagFilter = "GameData.Level"))
 	TSoftObjectPtr<UWorld> GetGameLevelByTag(const FGameplayTag InLevelTag) const;

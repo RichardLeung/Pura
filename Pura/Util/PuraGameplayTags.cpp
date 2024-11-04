@@ -114,4 +114,8 @@ namespace PuraGameplayTags
 
 	// Save Game Tags
 	UE_DEFINE_GAMEPLAY_TAG(GameData_SaveGame_Slot_1, "GameData.SaveGame.Slot.1")
+	UE_DEFINE_GAMEPLAY_TAG(GameData_SaveGame_Slot_2, "GameData.SaveGame.Slot.2")
+	UE_DEFINE_GAMEPLAY_TAG(GameData_SaveGame_Slot_3, "GameData.SaveGame.Slot.3")
+	UE_DEFINE_GAMEPLAY_TAG(GameData_SaveGame_Slot_4, "GameData.SaveGame.Slot.4")
+	UE_DEFINE_GAMEPLAY_TAG(GameData_SaveGame_Slot_Setting, "GameData.SaveGame.Slot.Setting")
 }

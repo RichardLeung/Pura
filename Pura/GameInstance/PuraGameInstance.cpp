@@ -33,18 +33,16 @@ void UPuraGameInstance::LoadDataTable()
 	// 加载升级经验数据表
 	TArray<FName> AllLevelExpKeys = DT_LevelExp->GetRowNames();
 	Debug::Print(TEXT("加载LevelExpDataTable,包含等级：" + FString::FromInt(AllLevelExpKeys.Num())));
-	TMap<FName, FPuraLevelExpRow> LevelExpDataNew;
+	LevelExpData.Empty();
 	// 获取UDataTable的RowMap，这是一个包含所有行的TMap，其中键为RowName，值为void指针
 	const TMap<FName, uint8*>& Map_LevelExpDataTable = DT_LevelExp->GetRowMap();
 	// 遍历RowMap并将每个行名和数据添加到我们的MyDataMap中
 	for (const auto& RowPair_LevelExp : Map_LevelExpDataTable)
 	{
-		const FName& RowName = RowPair_LevelExp.Key;
 		const FPuraLevelExpRow* RowData = reinterpret_cast<const FPuraLevelExpRow*>(
 			RowPair_LevelExp.Value);
-		LevelExpDataNew.Add(RowName, *RowData);
+		LevelExpData.Add(*RowData);
 	}
-	LevelExpData = LevelExpDataNew;
 }
 
 TSoftObjectPtr<UWorld> UPuraGameInstance::GetGameLevelByTag(const FGameplayTag InLevelTag) const

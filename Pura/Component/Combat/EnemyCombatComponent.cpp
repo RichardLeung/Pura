@@ -55,10 +55,10 @@ void UEnemyCombatComponent::OnWeaponHitTargetActor(AActor* HitActor)
 
 APawn* UEnemyCombatComponent::GetCombatTarget()
 {
-	if (CombatTarget == nullptr)
+	if (!CombatTarget)
 	{
 		// 获取 PlayerCharacter
-		CombatTarget = Cast<APawn>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
+		CombatTarget = Cast<APawn>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
 	}
 	return CombatTarget;
 }
