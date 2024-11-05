@@ -22,7 +22,6 @@ class PURA_API APuraHeroCharacter : public APuraBaseCharacter
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this character's properties
 	APuraHeroCharacter();
 
 	virtual UPawnCombatComponent* GetPawnCombatComponent() const override;
@@ -32,16 +31,13 @@ public:
 	virtual UHeroUIComponent* GetHeroUIComponent() const override;
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	virtual void PossessedBy(AController* NewController) override;
 
 public:
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 private:

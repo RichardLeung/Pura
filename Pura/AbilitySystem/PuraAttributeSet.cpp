@@ -149,15 +149,18 @@ void UPuraAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectMo
 		if (GetCurrentHealth() == 0)
 		{
 			UPuraFunctionLibrary::AddGameplayTagToActorIfNone(GetOwningActor(), PuraGameplayTags::Shared_Status_Dead);
+
 			UEnemyCombatComponent* CombatComponent = Cast<UEnemyCombatComponent>(
 				CachedPawnCombatInterface->GetPawnCombatComponent());
-			FGameplayEventData Payload;
-			Payload.Instigator = Data.Target.GetAvatarActor();
-			Payload.EventMagnitude = 50.f;
-			Debug::Print(GetOwningActor()->GetActorNameOrLabel());
-			UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(CombatComponent->GetCombatTarget(),
-			                                                         PuraGameplayTags::Shared_SetByCaller_IncomeEXP,
-			                                                         Payload);
+			if (CombatComponent)
+			{
+				FGameplayEventData Payload;
+				Payload.Instigator = Data.Target.GetAvatarActor();
+				Payload.EventMagnitude = 50.f;
+				UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(CombatComponent->GetCombatTarget(),
+				                                                         PuraGameplayTags::Shared_SetByCaller_IncomeEXP,
+				                                                         Payload);
+			}
 		}
 	}
 	else if (Data.EvaluatedData.Attribute == GetIncomeExpAttribute())
@@ -175,7 +178,6 @@ void UPuraAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectMo
 				SetExperience(GetExperience() + LocalIncomeXP - CurrentRow.RequiredExp);
 				if (UHeroUIComponent* HeroUIComponent = CachedPawnUIInterface->GetHeroUIComponent())
 				{
-					Debug::Print(TEXT("OnStatusMaxValueChanged"));
 					HeroUIComponent->OnStatusMaxValueChanged.Broadcast(
 						EPuraHeroStatus::Level, GetLevel());
 					HeroUIComponent->OnStatusMaxValueChanged.Broadcast(
@@ -188,7 +190,6 @@ void UPuraAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectMo
 			}
 			if (UHeroUIComponent* HeroUIComponent = CachedPawnUIInterface->GetHeroUIComponent())
 			{
-				Debug::Print(TEXT("OnStatusCurrentValueChanged"));
 				HeroUIComponent->OnStatusCurrentValueChanged.Broadcast(
 					EPuraHeroStatus::Experience, GetExperience());
 			}
